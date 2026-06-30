@@ -6,29 +6,32 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Program {
     public static void main(String[] args) {
         //lấy ds department từ DB
         //B1:tạo session kết nối đến database
-        SessionFactory sessionFactory;
-        Configuration cfg = new Configuration();
-        cfg.configure();
-
-
-        sessionFactory = cfg.buildSessionFactory();
-
-        //kết nối đến database
-        Session session = sessionFactory.openSession();
-
-        //b2:Lấy dữ liệu từ bảng department
-
+//        SessionFactory sessionFactory;
+//        Configuration cfg = new Configuration();
+//        cfg.configure();
+//
+//
+//        sessionFactory = cfg.buildSessionFactory();
+//
+//        //kết nối đến database
+//        Session session = sessionFactory.openSession();
+//
+//        //b2:Lấy dữ liệu từ bảng department
+//
 //        List<Department> departments = new ArrayList<>();
 //
 //        String hql = "From Department";
 //
 //        Query<Department> query = session.createQuery(hql, Department.class);
 //
-//        departments = query.list();
+//        departments = query.list(); //lấy ds
 //
 //        for (Department de : departments) {
 //            System.out.println(de.toString());
@@ -61,14 +64,15 @@ public class Program {
 
         //b1:tìm department có id =5
 
-        String hql="From Department Where id = :idParam";
-        Query<Department> query=session.createQuery(hql,Department.class);
-        query.setParameter("idParam",5);
-        Department department=query.uniqueResult();
+//        String hql="From Department Where id = :idParam";
+//        Query<Department> query=session.createQuery(hql,Department.class);
+//        query.setParameter("idParam",5);
+//        Department department=query.uniqueResult();
 
         //b2: update thông tin cho department trên
-        session.beginTransaction();
-        department.setName("departmentName5");
+//        session.beginTransaction();
+//        department.setName("departmentName5");
+//        session.getTransaction().commit();
 
 
 

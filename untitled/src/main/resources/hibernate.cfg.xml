@@ -20,6 +20,7 @@
 
         <!--        <property name="hbm2ddl.auto">update</property>-->
         <mapping class="com.vti.entity.Department" />
+        <mapping class="com.vti.entity.Position" />
 
     </session-factory>
 </hibernate-configuration>
