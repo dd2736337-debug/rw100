@@ -9,8 +9,15 @@ public interface IDepartmentRepository {
     List<Department> findAll();
 
     Department findByID(Integer id);
+//
+//    void create(String name);
+//
+//    void update(String updateName, Integer id);
 
-    void create(String name);
+    void create(Department department);
 
-    void update(String updateName, Integer id);
+    void update(Department department);
+
+    void delete(Integer id);
+
 }

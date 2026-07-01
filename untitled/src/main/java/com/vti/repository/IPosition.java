@@ -10,9 +10,15 @@ public interface IPosition {
 
     Position findById(Integer id);
 
-    void create(String name);
+//    void create(String name);
+//
+//    void update(String updateName, Integer id);
 
-    void update(String updateName, Integer id);
+    void create(Position position);
+
+    void update(Position position);
+
+    void delete(Integer id);
 
 
 }

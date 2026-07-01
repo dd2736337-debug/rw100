@@ -5,24 +5,20 @@ import com.vti.repository.IPosition;
 import com.vti.utils.HibernateUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PositionRepository implements IPosition {
+public class PositionRepositoryImpl implements IPosition {
     private final SessionFactory sessionFactory = HibernateUtils.sessionFactory;
 
     @Override
     public List<Position> findAll() {
-        List<Position> positions = new ArrayList<>();
         Session session = sessionFactory.openSession();
         try {
-            String hql = "From Position";
-            Query<Position> query = session.createQuery(hql, Position.class);
-            positions = query.list();
-            return positions;
-
+            return session.createQuery("FROM Position ", Position.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         } finally {
             session.close();
         }
@@ -31,30 +27,26 @@ public class PositionRepository implements IPosition {
 
     @Override
     public Position findById(Integer id) {
-        Position position = new Position();
         Session session = sessionFactory.openSession();
         try {
-            String hql = "From Position Where id = :idParam";
-            Query<Position> query = session.createQuery(hql, Position.class);
-            query.setParameter("idParam", 1);
-            position = query.uniqueResult();
-            return position;
-
+            return session.get(Position.class, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         } finally {
             session.close();
         }
     }
 
     @Override
-    public void create(String name) {
+    public void create(Position position) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
         try {
-            Position position = new Position();
-            position.setName(name);
+            session.beginTransaction();
             session.persist(position);
             session.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -63,15 +55,33 @@ public class PositionRepository implements IPosition {
     }
 
     @Override
-    public void update(String updateName, Integer id) {
+    public void update(Position position) {
         Session session = sessionFactory.openSession();
-        session.beginTransaction();
         try {
-            Position position = session.find(Position.class, id);
-            position.setName(updateName);
+            session.beginTransaction();
+            session.merge(position);
             session.getTransaction().commit();
-
         } catch (Exception e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            session.close();
+        }
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+        Session session = sessionFactory.openSession();
+        try {
+            session.beginTransaction();
+            Position p = session.get(Position.class, id);
+            if (p != null) {
+                session.remove(p);
+            }
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
             session.getTransaction().rollback();
         } finally {
             session.close();
@@ -79,4 +89,3 @@ public class PositionRepository implements IPosition {
 
     }
 }
-
