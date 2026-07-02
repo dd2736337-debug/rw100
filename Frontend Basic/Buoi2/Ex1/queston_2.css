@@ -1,0 +1,13 @@
+p{
+    border: 1px solid rgb(39, 160, 35);
+    padding:70px 70px 70px ;
+}
+div{
+    border: 1px solid rgb(219, 19, 19);
+    margin-right : 80%;
+}
+.centered{
+    border: 2px solid rgb(39, 160, 35);
+    margin: 50px 0px
+
+}
