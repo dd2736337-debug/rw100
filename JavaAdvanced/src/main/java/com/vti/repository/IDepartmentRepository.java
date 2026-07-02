@@ -1,0 +1,23 @@
+package com.vti.repository;
+
+import com.vti.entity.Department;
+
+import java.util.List;
+
+public interface IDepartmentRepository {
+
+    List<Department> findAll();
+
+    Department findByID(Integer id);
+//
+//    void create(String name);
+//
+//    void update(String updateName, Integer id);
+
+    void create(Department department);
+
+    void update(Department department);
+
+    void delete(Integer id);
+
+}
