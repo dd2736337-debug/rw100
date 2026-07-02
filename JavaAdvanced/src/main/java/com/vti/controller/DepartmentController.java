@@ -7,7 +7,7 @@ import com.vti.service.impl.DepartmentServiceImpl;
 import java.util.List;
 
 public class DepartmentController {
-    private final IDepartmentService departmentService=new DepartmentServiceImpl();
+    private final IDepartmentService departmentService = new DepartmentServiceImpl();
 
     public List<Department> findAll() {
         return departmentService.findAll();
