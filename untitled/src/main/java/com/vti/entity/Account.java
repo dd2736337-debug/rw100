@@ -37,7 +37,7 @@ public class Account {
     @JoinColumn(name ="department_id")
     private Department dep;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
 

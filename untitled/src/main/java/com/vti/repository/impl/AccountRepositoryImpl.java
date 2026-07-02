@@ -89,10 +89,10 @@ public class AccountRepositoryImpl implements IAccountRepository {
     public static void main(String[] args) {
         AccountRepositoryImpl accountRepository=new AccountRepositoryImpl();
         IDepartmentRepository departmentRepository=new DepartmentRepositoryImpl();
-//        List<Account> accounts =accountRepository.findAll();
-//        for (Account acc:accounts){
-//            System.out.println(acc);
-//        }
+        List<Account> accounts =accountRepository.findAll();
+        for (Account acc:accounts){
+            System.out.println(acc);
+        }
 //        System.out.println(accountRepository.findById(1));
 
 //        Account account =new Account();
