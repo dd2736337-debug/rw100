@@ -1,6 +1,10 @@
 package com.vti.backend;
 
+import com.vti.controller.AccountController;
+import com.vti.entity.Account;
 import com.vti.entity.Department;
+import com.vti.entity.Position;
+import com.vti.enums.PositionName;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -73,6 +77,57 @@ public class Program {
 //        session.beginTransaction();
 //        department.setName("departmentName5");
 //        session.getTransaction().commit();
+
+        //thêm mới
+        AccountController controller=new AccountController();
+
+//        Department department=new Department();
+//        department.setName("IT");
+//
+//        Position position =new Position();
+//        position.setName(PositionName.DEV);
+//
+//        Account account =new Account();
+//        account.setUserName("Duong01");
+//        account.setFullName("Đại Dương");
+//        account.setEmail("daiduong2593@gmail.com");
+//        account.setDep(department);
+//        account.setPosition(position);
+//
+//        controller.create(account);
+//        System.out.println("Thêm mới thành công");
+//        System.out.println(account);
+
+        //Lấy danh sách
+//        List<Account> accounts=controller.findAll();
+//        for (Account account:accounts){
+//            System.out.println(account);
+//        }
+
+        //Tìm theo id
+//        Account account=controller.findById(3);
+//        System.out.println(account);
+
+        //update
+//        Account account=controller.findById(3);
+//        if (account!=null){
+//            account.setFullName("Dương Đại");
+//            controller.update(account);
+//            System.out.println("Cập nhật thành công");
+//        }else {
+//            System.out.println("Không tìm thấy accout");
+//        }
+
+        //delete
+        Account account=controller.findById(1);
+        if (account != null){
+            controller.delete(1);
+            System.out.println("Xóa thành công");
+        }else {
+            System.out.println("Không tìm thấy account");
+        }
+
+
 
 
 
