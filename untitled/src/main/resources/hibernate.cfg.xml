@@ -18,9 +18,13 @@
         <property name="format_sql">true</property>
         <property name="highlight_sql">true</property>
 
-        <!--        <property name="hbm2ddl.auto">update</property>-->
-        <mapping class="com.vti.entity.Department" />
-        <mapping class="com.vti.entity.Position" />
+        <property name="hbm2ddl.auto">update</property>
+
+        <mapping class="com.vti.entity.Department"/>
+        <mapping class="com.vti.entity.Position"/>
+        <mapping class="com.vti.entity.Account"/>
+        <mapping class="com.vti.entity.Group"/>
+        <mapping class="com.vti.entity.GroupAccount"/>
 
     </session-factory>
 </hibernate-configuration>
