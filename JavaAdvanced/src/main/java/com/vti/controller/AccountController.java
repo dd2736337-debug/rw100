@@ -13,19 +13,19 @@ public class AccountController {
         return service.findAll();
     }
 
-    Account findById(Integer id) {
+    public Account findById(Integer id) {
         return service.findById(id);
     }
 
-    void create(Account account) {
+    public void create(Account account) {
         service.create(account);
     }
 
-    void update(Account account) {
+    public void update(Account account) {
         service.update(account);
     }
 
-    void delete(Integer id) {
+    public void delete(Integer id) {
         service.delete(id);
     }
 }
