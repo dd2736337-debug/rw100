@@ -33,11 +33,11 @@ public class Account {
     //username,.....
 
     //cấu hình khóa ngoại
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name ="department_id")
     private Department dep;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "position_id")
     private Position position;
 
