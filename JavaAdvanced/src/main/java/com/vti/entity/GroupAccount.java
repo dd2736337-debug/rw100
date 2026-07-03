@@ -1,16 +1,15 @@
 package com.vti.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "group_account")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class GroupAccount {
@@ -20,10 +19,12 @@ public class GroupAccount {
     private Integer id;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name ="account_id")
     private Account account;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(name ="group_id")
     private Group group;
 

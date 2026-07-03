@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import java.util.List;
 
 public class GruopAccountRepository implements IGroupAccount {
-    private SessionFactory sessionFactory = HibernateUtils.sessionFactory;
+    private  final SessionFactory sessionFactory = HibernateUtils.sessionFactory;
 
     @Override
     public List<GroupAccount> findAll() {

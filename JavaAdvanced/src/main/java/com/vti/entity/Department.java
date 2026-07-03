@@ -1,14 +1,12 @@
 package com.vti.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -27,7 +25,8 @@ public class Department {
 //    private Account account;
 
     //ko có cũng được
-    @OneToMany(mappedBy = "dep",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "dep",fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Account> accounts;//list account thuộc  về department này
 
 

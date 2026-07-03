@@ -1,10 +1,7 @@
 package com.vti.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
@@ -14,7 +11,8 @@ import java.util.List;
 
 @Entity
 @Table(name = "account")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -35,10 +33,12 @@ public class Account {
     //cấu hình khóa ngoại
     @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name ="department_id")
+    @ToString.Exclude
     private Department dep;
 
     @ManyToOne(cascade ={CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "position_id")
+    @ToString.Exclude
     private Position position;
 
 
@@ -47,6 +47,7 @@ public class Account {
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "account",cascade = CascadeType.ALL,orphanRemoval = true)
+    @ToString.Exclude
     private List<GroupAccount> groupAccounts;
 
 

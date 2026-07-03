@@ -1,16 +1,13 @@
 package com.vti.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-@Data
+@Getter
+@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +27,7 @@ public class Group {
     private LocalDateTime createDate;
 
     @OneToMany(mappedBy = "group",cascade = CascadeType.ALL,orphanRemoval = true)
+    @ToString.Exclude
     private List<GroupAccount> groupAccounts;
 
 

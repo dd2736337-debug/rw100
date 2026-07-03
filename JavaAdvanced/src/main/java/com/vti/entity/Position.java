@@ -3,16 +3,13 @@ package com.vti.entity;
 import com.vti.enums.ArticlePositionNameConverter;
 import com.vti.enums.PositionName;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Data
-@ToString
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "position")
@@ -31,7 +28,8 @@ public class Position {
     @Column(name = "position_name", length = 100, nullable = false, unique = true)
     private PositionName name;
 
-    @OneToMany(mappedBy ="position",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy ="position",fetch = FetchType.EAGER)
+    @ToString.Exclude
     private List<Account> accounts;
 }
 
