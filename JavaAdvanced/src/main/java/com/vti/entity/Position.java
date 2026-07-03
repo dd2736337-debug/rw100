@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 @Entity
 @Data
 @ToString
@@ -28,5 +30,8 @@ public class Position {
     @Convert(converter = ArticlePositionNameConverter.class)
     @Column(name = "position_name", length = 100, nullable = false, unique = true)
     private PositionName name;
+
+    @OneToMany(mappedBy ="position",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    private List<Account> accounts;
 }
 

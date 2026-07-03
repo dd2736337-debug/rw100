@@ -27,8 +27,8 @@ public class Department {
 //    private Account account;
 
     //ko có cũng được
-//    @OneToMany(mappedBy = "dep",fetch = FetchType.EAGER)
-//    private List<Account> accounts;//list account thuộc  về department này
+    @OneToMany(mappedBy = "dep",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
+    private List<Account> accounts;//list account thuộc  về department này
 
 
 }

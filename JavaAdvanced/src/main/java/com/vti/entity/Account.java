@@ -33,11 +33,11 @@ public class Account {
     //username,.....
 
     //cấu hình khóa ngoại
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinColumn(name ="department_id")
     private Department dep;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade ={CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "position_id")
     private Position position;
 
@@ -45,6 +45,9 @@ public class Account {
     @CreationTimestamp
     @Column(name = "create_date",updatable = false)
     private LocalDateTime createDate;
+
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<GroupAccount> groupAccounts;
 
 
 

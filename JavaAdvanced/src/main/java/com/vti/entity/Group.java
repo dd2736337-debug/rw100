@@ -29,6 +29,10 @@ public class Group {
     @Column(name = "create_date", updatable = false)
     private LocalDateTime createDate;
 
+    @OneToMany(mappedBy = "group",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<GroupAccount> groupAccounts;
+
+
 
 
 
