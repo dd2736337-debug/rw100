@@ -1,5 +1,6 @@
 package com.vti.testtingsystem.dto;
 
+import com.vti.testtingsystem.Enum.PositionName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentDto {
-    private String name;
+public class PositionDto {
+    private PositionName positionName;
 }

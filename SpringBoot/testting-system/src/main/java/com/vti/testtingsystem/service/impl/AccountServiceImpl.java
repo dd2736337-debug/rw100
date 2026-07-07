@@ -3,8 +3,10 @@ package com.vti.testtingsystem.service.impl;
 import com.vti.testtingsystem.dto.AccountDto;
 import com.vti.testtingsystem.entity.Account;
 import com.vti.testtingsystem.entity.Department;
+import com.vti.testtingsystem.entity.Position;
 import com.vti.testtingsystem.repository.IAccountRepository;
 import com.vti.testtingsystem.repository.IDepartmentRepository;
+import com.vti.testtingsystem.repository.IPositionRepository;
 import com.vti.testtingsystem.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class AccountServiceImpl implements IAccountService {
     private IAccountRepository repository;
     @Autowired
     private IDepartmentRepository departmentRepository;
+
+    @Autowired
+    private IPositionRepository positionRepository;
 
     @Override
     public List<Account> findAll() {
@@ -32,12 +37,15 @@ public class AccountServiceImpl implements IAccountService {
     public void create(AccountDto accountDto) {
         Department department = departmentRepository.findById(accountDto.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department không tồn tại"));
+        // tim póition
+        Position position = positionRepository.findById(accountDto.getPositionId()).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
 
         Account account = new Account();
         account.setUserName(accountDto.getUserName());
         account.setFullName(accountDto.getFullName());
         account.setEmail(accountDto.getEmail());
         account.setDepartment(department);
+        account.setPosition(position);
 
         repository.save(account);
     }
@@ -46,10 +54,13 @@ public class AccountServiceImpl implements IAccountService {
     public void update(AccountDto accountDto, Integer id) {
         Account account = repository.findById(id).orElseThrow(() -> new RuntimeException("Account không tồn tại"));
         Department department = departmentRepository.findById(accountDto.getDepartmentId()).orElseThrow(() -> new RuntimeException("Department không tồn tại"));
+        // tim póition
+        Position position = positionRepository.findById(accountDto.getPositionId()).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
         account.setUserName(accountDto.getUserName());
         account.setFullName(accountDto.getFullName());
         account.setEmail(accountDto.getEmail());
         account.setDepartment(department);
+        account.setPosition(position);// model mapper
         repository.save(account);
 
     }

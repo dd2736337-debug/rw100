@@ -35,9 +35,15 @@ public class Account {
     //username,.....
 
     //cấu hình khóa ngoại
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name ="department_id")
     @JsonIgnoreProperties("accounts")
     @ToString.Exclude
     private Department department;
+
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    @ToString.Exclude
+//    @JsonIgnoreProperties("accounts")
+    private Position position;
 }

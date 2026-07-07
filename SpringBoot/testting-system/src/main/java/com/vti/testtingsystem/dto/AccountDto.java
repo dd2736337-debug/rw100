@@ -1,6 +1,7 @@
 package com.vti.testtingsystem.dto;
 
 import com.vti.testtingsystem.entity.Department;
+import com.vti.testtingsystem.entity.Position;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -18,5 +19,7 @@ public class AccountDto {
     private String fullName;
     private String email;
     private Integer departmentId;
+    private Integer positionId;// positionid
     private LocalDateTime createDate;
+
 }
