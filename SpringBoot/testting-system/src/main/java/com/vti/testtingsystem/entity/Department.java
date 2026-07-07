@@ -3,6 +3,8 @@ package com.vti.testtingsystem.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,4 +20,8 @@ public class Department {
     private Integer id;
     @Column(name = "department_name", length = 100, nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "department")
+    @ToString.Exclude
+    private List<Account> accounts;
 }
