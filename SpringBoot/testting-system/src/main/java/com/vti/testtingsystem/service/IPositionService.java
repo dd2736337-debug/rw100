@@ -10,5 +10,11 @@ public interface IPositionService {
 
     Position findById(Integer id);
 
+    void create (PositionDto dto);
+
+    void update(PositionDto dto,Integer id);
+
+    void delete(Integer id);
+
 
 }

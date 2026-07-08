@@ -1,5 +1,6 @@
 package com.vti.testtingsystem.service.impl;
 
+import com.vti.testtingsystem.dto.PositionDto;
 import com.vti.testtingsystem.entity.Position;
 import com.vti.testtingsystem.repository.IPositionRepository;
 import com.vti.testtingsystem.service.IPositionService;
@@ -21,6 +22,29 @@ public class PositionServiceImpl implements IPositionService {
     @Override
     public Position findById(Integer id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
+
+    }
+
+    @Override
+    public void create(PositionDto dto) {
+        Position position = new Position();
+        position.setName(dto.getPositionName());
+        repository.save(position);
+    }
+
+    @Override
+    public void update(PositionDto dto, Integer id) {
+        Position position = repository.findById(id).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
+        if (position != null) {
+            position.setName(dto.getPositionName());
+            repository.save(position);
+        }
+
+    }
+
+    @Override
+    public void delete(Integer id) {
+        repository.deleteById(id);
 
     }
 
