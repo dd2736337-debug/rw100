@@ -21,7 +21,7 @@ public class Position {
 
 
     @Enumerated(EnumType.STRING)//String Ordinal
-    @Column(name = "position_name", length = 100, nullable = false, unique = true)
+    @Column(name = "position_name", length = 100)
     private PositionName name;
 
 //    @Convert(converter = ArticlePositionNameConverter.class)

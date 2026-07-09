@@ -10,5 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto {
+    private Integer id;
     private String name;
 }

@@ -20,37 +20,44 @@ public class DepartmentController {
     //lấy ra ds department
 
     @GetMapping
-    public ResponseEntity<List<Department>> findAll() {
+    public ResponseEntity<List<DepartmentDto>> findAll() {
 
         return ResponseEntity.ok(departmentService.findAll());
     }
 
     //lấy ra thông tin department theo id
     @GetMapping("/{id}")
-    public ResponseEntity<Department> findById(@PathVariable Integer id) {
+    public ResponseEntity<DepartmentDto> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(departmentService.findById(id));
     }
 
-    //tạo mới 1 department
-    @PostMapping
-    public ResponseEntity<String> create(@RequestBody DepartmentDto dto) {
-        departmentService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Thêm mới thành công");
+    //tìm kiếm theo departmentName
+    @GetMapping("/search")
+    public ResponseEntity<DepartmentDto> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(departmentService.findByName(name));
     }
 
-    //update
-    @PutMapping("/{id}")
-    public ResponseEntity<String> update(@RequestBody DepartmentDto dto, @PathVariable Integer id) {
-        departmentService.update(dto, id);
-        return ResponseEntity.ok("Update thành công");
-    }
 
-    //Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteByID(@PathVariable Integer id) {
-        departmentService.deleteByID(id);
-        return ResponseEntity.ok("Xóa thành công");
-    }
+//    //tạo mới 1 department
+//    @PostMapping
+//    public ResponseEntity<String> create(@RequestBody Department department) {
+//        departmentService.create(department);
+//        return ResponseEntity.status(HttpStatus.CREATED).body("Thêm mới thành công");
+//    }
+//
+//    //update
+//    @PutMapping("/{id}")
+//    public ResponseEntity<String> update(@RequestBody Department department, @PathVariable Integer id) {
+//        departmentService.update(department, id);
+//        return ResponseEntity.ok("Update thành công");
+//    }
+//
+//    //Xóa
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<String> deleteByID(@PathVariable Integer id) {
+//        departmentService.deleteByID(id);
+//        return ResponseEntity.ok("Xóa thành công");
+//    }
 
 //    //tạo mới 1 department
 //    @PostMapping

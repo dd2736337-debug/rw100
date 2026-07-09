@@ -3,5 +3,23 @@ package com.vti.testtingsystem.repository;
 import com.vti.testtingsystem.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface IAccountRepository extends JpaRepository<Account,Integer> {
+import java.util.List;
+import java.util.Optional;
+
+public interface IAccountRepository extends JpaRepository<Account, Integer> {
+    Account findByUserName(String userName);
+
+    List<Account> findAllByFullName(String fullName);
+
+
+    boolean existsByUserName(String userName);
+
+
+    List<Account> findByFullNameAndUserName(String fullName, String userName);
+
+    List<Account> findByFullNameOrUserName(String fullName, String userName);
+
+    Optional<Account> findByFullName(String fullName);
+
+
 }

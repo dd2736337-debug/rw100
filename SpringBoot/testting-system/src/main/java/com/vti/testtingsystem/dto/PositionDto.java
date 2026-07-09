@@ -11,5 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PositionDto {
-    private PositionName positionName;
+    private Integer id;
+    private PositionName name;
 }

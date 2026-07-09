@@ -32,6 +32,7 @@ public class Account {
     @Column(name = "create_date",updatable = false)
     private LocalDateTime createDate;
 
+
     //username,.....
 
     //cấu hình khóa ngoại
@@ -46,4 +47,5 @@ public class Account {
     @ToString.Exclude
 //    @JsonIgnoreProperties("accounts")
     private Position position;
+
 }

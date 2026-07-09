@@ -4,18 +4,21 @@ import com.vti.testtingsystem.dto.DepartmentDto;
 import com.vti.testtingsystem.entity.Department;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IDepartmentService {
 
-    List<Department> findAll();
+    List<DepartmentDto> findAll();
 
-    Department findById(Integer id);
+    DepartmentDto findById(Integer id);
 
 
-    void create(DepartmentDto dto);
+    void create(Department department);
 
-    void update(DepartmentDto dto, Integer id);
+
+    void update(Department department, Integer id);
 
     void deleteByID(Integer id);
 
+     DepartmentDto findByName(String name);
 }

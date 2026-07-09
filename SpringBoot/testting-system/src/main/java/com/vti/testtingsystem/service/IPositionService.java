@@ -1,20 +1,22 @@
 package com.vti.testtingsystem.service;
 
+import com.vti.testtingsystem.Enum.PositionName;
 import com.vti.testtingsystem.dto.PositionDto;
-import com.vti.testtingsystem.entity.Position;
 
 import java.util.List;
 
 public interface IPositionService {
-    List<Position> findAll();
+    List<PositionDto> findAll();
 
-    Position findById(Integer id);
+    PositionDto findById(Integer id);
 
-    void create (PositionDto dto);
-
-    void update(PositionDto dto,Integer id);
-
-    void delete(Integer id);
+    PositionDto findByName(PositionName name);
+//
+//    void create (PositionDto dto);
+//
+//    void update(PositionDto dto,Integer id);
+//
+//    void delete(Integer id);
 
 
 }
