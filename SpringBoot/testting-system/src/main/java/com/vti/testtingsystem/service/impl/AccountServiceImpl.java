@@ -37,9 +37,10 @@ public class AccountServiceImpl implements IAccountService {
 //            AccountDTO dto=modelMapper.map(account, AccountDTO.class);
 //            accountDTOS.add(dto);
 //        }
-        List<Account> accounts = repository.findAll();
-        List<AccountDTO> dtos = accounts.stream().map(a -> modelMapper.map(a, AccountDTO.class)).toList();
-        return dtos;
+//        List<Account> accounts = repository.findAll();
+//        List<AccountDTO> dto = accounts.stream().map(a -> modelMapper.map(a, AccountDTO.class)).toList();
+//        return dto;
+        return repository.findAll().stream().map(acc -> modelMapper.map(acc, AccountDTO.class)).toList();
     }
 
     @Override
@@ -105,8 +106,8 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public void update(AccountCreateAndUpdateForm form, Integer id) {
-        Account account=repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Account không tồn tại"));
+        Account account = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account không tồn tại"));
         if (repository.existsByUserNameAndIdNot(form.getUserName(), null)) {
             throw new RuntimeException("User Đã tồn tại");
         }
@@ -124,10 +125,11 @@ public class AccountServiceImpl implements IAccountService {
         account.setPosition(position);
         repository.save(account);
     }
+
     @Override
     public void delete(Integer id) {
-        Account account=repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Account không tồn tại"));
+        Account account = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Account không tồn tại"));
         repository.deleteById(id);
 
     }
