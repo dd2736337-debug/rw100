@@ -21,5 +21,16 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
     Optional<Account> findByFullName(String fullName);
 
+    Optional<Account> findByEmail(String email);
+    
+
+    boolean existsByUserNameAndIdNot(String userName, Integer id);
+
+    boolean existsByEmailAndIdNot(String email, Integer id);
+
+    boolean existsByDepartmentId(Integer departmentId);
+
+    boolean existsByPositionId(Integer positionId);
+
 
 }

@@ -2,6 +2,7 @@ package com.vti.testtingsystem.controller;
 
 import com.vti.testtingsystem.dto.DepartmentDto;
 import com.vti.testtingsystem.entity.Department;
+import com.vti.testtingsystem.form.DepartmentCreateAndUpdateForm;
 import com.vti.testtingsystem.service.IDepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,19 +39,19 @@ public class DepartmentController {
     }
 
 
-//    //tạo mới 1 department
-//    @PostMapping
-//    public ResponseEntity<String> create(@RequestBody Department department) {
-//        departmentService.create(department);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("Thêm mới thành công");
-//    }
-//
-//    //update
-//    @PutMapping("/{id}")
-//    public ResponseEntity<String> update(@RequestBody Department department, @PathVariable Integer id) {
-//        departmentService.update(department, id);
-//        return ResponseEntity.ok("Update thành công");
-//    }
+    //tạo mới 1 department
+    @PostMapping
+    public ResponseEntity<String> create(@RequestBody DepartmentCreateAndUpdateForm form) {
+        departmentService.create(form);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Thêm mới thành công");
+    }
+
+    //update
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@RequestBody DepartmentCreateAndUpdateForm form, @PathVariable Integer id) {
+        departmentService.update(form, id);
+        return ResponseEntity.ok("Update thành công");
+    }
 //
 //    //Xóa
 //    @DeleteMapping("/{id}")

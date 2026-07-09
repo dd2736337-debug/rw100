@@ -8,5 +8,9 @@ import java.util.Optional;
 
 public interface IPositionRepository extends JpaRepository<Position, Integer> {
     Optional<Position> findByName(PositionName name);
+    
+    boolean existsByName(PositionName name);
+
+    boolean existsByNameAndIdNot(PositionName name, Integer id);
 
 }
