@@ -48,10 +48,12 @@ public class AccountServiceImpl implements IAccountService {
         Account account = repository.findById(id).orElseThrow(() -> new RuntimeException("Account không tồn tại"));
         AccountDTO dto = modelMapper.map(account, AccountDTO.class);
         if (account.getDepartment() != null) {
+            dto.setDepartmentId(account.getDepartment().getId());
             dto.setDepartmentName(account.getDepartment().getName());
         }
         if (account.getPosition() != null) {
             dto.setPositionName(account.getPosition().getName().name());
+            dto.setPositionId(account.getPosition().getId());
         }
         return dto;
     }
@@ -75,10 +77,12 @@ public class AccountServiceImpl implements IAccountService {
         Account account = repository.findByEmail(email).orElseThrow(() -> new RuntimeException("Account không tồn tại"));
         AccountDTO dto = modelMapper.map(account, AccountDTO.class);
         if (account.getDepartment() != null) {
+            dto.setDepartmentId(account.getDepartment().getId());
             dto.setDepartmentName(account.getDepartment().getName());
         }
         if (account.getPosition() != null) {
             dto.setPositionName(account.getPosition().getName().name());
+            dto.setPositionId(account.getPosition().getId());
         }
         return dto;
     }
@@ -108,10 +112,10 @@ public class AccountServiceImpl implements IAccountService {
     public void update(AccountCreateAndUpdateForm form, Integer id) {
         Account account = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account không tồn tại"));
-        if (repository.existsByUserNameAndIdNot(form.getUserName(), null)) {
+        if (repository.existsByUserNameAndIdNot(form.getUserName(), id)) {
             throw new RuntimeException("User Đã tồn tại");
         }
-        if (repository.existsByEmailAndIdNot(form.getEmail(), null)) {
+        if (repository.existsByEmailAndIdNot(form.getEmail(),id)) {
             throw new RuntimeException("Email Đã tồn tại");
         }
         Department department = departmentRepository.findById(form.getDepartmentId())

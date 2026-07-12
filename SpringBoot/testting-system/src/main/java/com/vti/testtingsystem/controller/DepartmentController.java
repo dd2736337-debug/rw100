@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/departments")
 public class DepartmentController {
@@ -52,13 +52,14 @@ public class DepartmentController {
         departmentService.update(form, id);
         return ResponseEntity.ok("Update thành công");
     }
-//
-//    //Xóa
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteByID(@PathVariable Integer id) {
-//        departmentService.deleteByID(id);
-//        return ResponseEntity.ok("Xóa thành công");
-//    }
+
+
+    //Xóa
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteByID(@PathVariable Integer id) {
+        departmentService.deleteByID(id);
+        return ResponseEntity.ok("Xóa thành công");
+    }
 
 //    //tạo mới 1 department
 //    @PostMapping
@@ -67,12 +68,7 @@ public class DepartmentController {
 //        return new ResponseEntity<>("Tạo mới thành công", HttpStatus.CREATED);
 //    }
 
-//    //xóa theo id
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> deleteByID(@PathVariable Integer id) {
-//        departmentService.deleteByID(id);
-//        return new ResponseEntity<>("Xóa thành công", HttpStatus.OK);
-//    }
+
 
 
     //update theo id

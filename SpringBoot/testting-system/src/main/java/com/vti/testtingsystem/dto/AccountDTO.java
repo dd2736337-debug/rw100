@@ -18,5 +18,7 @@ public class AccountDTO {
     private String email;
     private String departmentName;
     private String positionName;
+    private Integer departmentId;
+    private Integer positionId;
     private LocalDateTime createDate;
 }
