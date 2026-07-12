@@ -1,205 +1,127 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Position Management</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Position Management</title>
 
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        />
 
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        />
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-    <style>
-
-        body{
-            background:#f5f5f5;
-        }
-
-        .page-header{
-            margin-top:20px;
-        }
-
-        .table{
-            background:white;
-        }
-
-        .action-btn{
-            margin-right:5px;
-        }
-
-        .modal-header{
-            background:#337ab7;
-            color:white;
-        }
-
-        .panel{
-            margin-top:20px;
-        }
-
-    </style>
-
-</head>
-<body>
-
-<div class="container">
-
-    <div class="page-header">
-
-        <h2>
-            <i class="fa fa-briefcase"></i>
-            Position Management
-        </h2>
-
-    </div>
-
-    <div class="panel panel-default">
-
-        <div class="panel-heading">
-
-            <button
-                    class="btn btn-success"
-                    data-toggle="modal"
-                    data-target="#modal-id"
-                    onclick="resetForm()">
-
-                <i class="fa fa-plus"></i>
-                Create Position
-
-            </button>
-
-        </div>
-
-        <div class="panel-body">
-
-            <table class="table table-bordered table-hover">
-
-                <thead>
-
-                <tr>
-
-                    <th width="80">ID</th>
-
-                    <th>Position Name</th>
-
-                    <th width="180">Action</th>
-
-                </tr>
-
-                </thead>
-
-                <tbody id="tableBody">
-
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- Modal -->
-
-<div class="modal fade" id="modal-id">
-
-    <div class="modal-dialog">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal">
-
-                    &times;
-
-                </button>
-
-                <h4 class="modal-title">
-                    Create Position
-                </h4>
-
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="position.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="page-header">
+                <h2>
+                    <i class="fa fa-briefcase"></i>
+                    Position Management
+                </h2>
             </div>
 
-            <div class="modal-body">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button
+                        class="btn btn-success"
+                        data-toggle="modal"
+                        data-target="#modal-id"
+                        onclick="resetForm()"
+                    >
+                        <i class="fa fa-plus"></i>
+                        Create Position
+                    </button>
+                </div>
 
-                <form class="form-horizontal">
+                <div class="panel-body">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th width="80">ID</th>
 
-                    <div class="form-group">
+                                <th>Position Name</th>
 
-                        <label class="col-sm-3 control-label">
+                                <th width="180">Action</th>
+                            </tr>
+                        </thead>
 
-                            Position
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-                        </label>
+        <!-- Modal -->
 
-                        <div class="col-sm-8">
+        <div class="modal fade" id="modal-id">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                        >
+                            &times;
+                        </button>
 
-                            <select
-                                    id="inputPositionName"
-                                    class="form-control">
-
-                                <option value="">-- Select Position --</option>
-
-                                <option value="DEV">DEV</option>
-
-                                <option value="TEST">TEST</option>
-
-                                <option value="SCRUM_MASTER">
-                                    SCRUM MASTER
-                                </option>
-
-                                <option value="PM">
-                                    PM
-                                </option>
-
-                            </select>
-
-                        </div>
-
+                        <h4 class="modal-title">Create Position</h4>
                     </div>
 
-                </form>
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">
+                                    Position
+                                </label>
 
+                                <div class="col-sm-8">
+                                    <select
+                                        id="inputPositionName"
+                                        class="form-control"
+                                    >
+                                        <option value="">
+                                            -- Select Position --
+                                        </option>
+
+                                        <option value="DEV">DEV</option>
+
+                                        <option value="TEST">TEST</option>
+
+                                        <option value="SCRUM_MASTER">
+                                            SCRUM MASTER
+                                        </option>
+
+                                        <option value="PM">PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="submit">
+                            <i class="fa fa-save"></i>
+
+                            Save
+                        </button>
+
+                        <button class="btn btn-default" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
             </div>
-
-            <div class="modal-footer">
-
-                <button
-                        class="btn btn-primary"
-                        id="submit">
-
-                    <i class="fa fa-save"></i>
-
-                    Save
-
-                </button>
-
-                <button
-                        class="btn btn-default"
-                        data-dismiss="modal">
-
-                    Close
-
-                </button>
-
-            </div>
-
         </div>
 
-    </div>
-
-</div>
-
-<script src="position.js"></script>
-
-</body>
+        <script src="position.js"></script>
+    </body>
 </html>

@@ -51,10 +51,10 @@ function loadData() {
                 tableContent += "<td>" + accounts[i].departmentName + "</td>";
                 tableContent += "<td>" + accounts[i].positionName + "</td>";
                 tableContent +=
-                    "<td><button onclick='onHandleEdit(" +
+                    "<td><button class='btn btn-edit' onclick='onHandleEdit(" +
                     accounts[i].id +
                     ")'>Edit</button> " +
-                    " <button onclick='onDelete(" +
+                    " <button class='btn btn-edit' onclick='onDelete(" +
                     accounts[i].id +
                     ")'>Delete</button></td>";
                 tableContent += "</tr>";
