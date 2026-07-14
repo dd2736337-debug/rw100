@@ -1,5 +1,5 @@
 let departments = [];
-let baseUrl = "http://localhost:8080/api/v1/departments";
+let baseUrl = "http://localhost:8080/departments";
 let v_idUpdate = -1;
 
 //================== Theme ==================

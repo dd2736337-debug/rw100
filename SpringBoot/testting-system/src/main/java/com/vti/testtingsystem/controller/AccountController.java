@@ -2,6 +2,7 @@ package com.vti.testtingsystem.controller;
 
 import com.vti.testtingsystem.dto.AccountDTO;
 import com.vti.testtingsystem.form.AccountCreateAndUpdateForm;
+import com.vti.testtingsystem.form.AccountSearchForm;
 import com.vti.testtingsystem.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,8 @@ public class AccountController {
     private AccountServiceImpl accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountDTO>> findAll() {
-        return ResponseEntity.ok(accountService.findAll());
+    public ResponseEntity<List<AccountDTO>> findAll(AccountSearchForm form) {
+        return ResponseEntity.ok(accountService.findAll(form));
     }
 
     @GetMapping("/{id}")

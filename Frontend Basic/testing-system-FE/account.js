@@ -2,7 +2,7 @@ var accounts = []; // mảng chứa account
 var v_idUpdate = -1;
 var vTheme = "";
 var baseUrl = "http://localhost:8080/accounts";
-var baseUrlDepartment = "http://localhost:8080/api/v1/departments";
+var baseUrlDepartment = "http://localhost:8080/departments";
 var baseUrlPosition = "http://localhost:8080/positions";
 var baseAvt = "https://avatars.githubusercontent.com/u/3143871";
 
@@ -28,11 +28,21 @@ function changeTheme(themeValue) {
 }
 
 function loadData() {
+    // lấy ra các gtri cần tìm kiếm
+    var usernameSearch = $("#usernameSearch").val();
+    var fullNameSearch = $("#fullNameSearch").val();
+    var emailSearch = $("#emailSearch").val();
+    var departmentIdSearch = $("#departmentSearchID").val();
+    var positionIdSearch = $("#positionSearchID").val();
+
+    var subUrl = `?userName=${usernameSearch}&email=${emailSearch}&departmentId=${departmentIdSearch}
+    &positionId=${positionIdSearch}&fullName=${fullNameSearch}`;
+
     // call api đến mockapi.io đe lấy ds account
     // jqAjax
     $.ajax({
         type: "GET",
-        url: baseUrl,
+        url: baseUrl + subUrl,
         // data: "data",  -- phục cho thêm hoặc update
         dataType: "JSON",
         success: function (response) {
@@ -48,6 +58,7 @@ function loadData() {
                     " style='height: 50px' alt='Image' /></td>";
                 tableContent += "<td>" + accounts[i].userName + "</td>";
                 tableContent += "<td>" + accounts[i].fullName + "</td>";
+                tableContent += "<td>" + accounts[i].email + "</td>";
                 tableContent += "<td>" + accounts[i].departmentName + "</td>";
                 tableContent += "<td>" + accounts[i].positionName + "</td>";
                 tableContent +=
@@ -251,6 +262,10 @@ function loadDepartment() {
 
             $("#inputDepartmentName").empty();
             $("#inputDepartmentName").append(content);
+            // load cho ô tìm kiếm
+            $("#departmentSearchID").empty();
+            $("#departmentSearchID").append("<option value=''>Tất cả</option>");
+            $("#departmentSearchID").append(content);
         },
         error: function (error) {
             alert("Call api get department thất bại");
@@ -274,6 +289,10 @@ function loadPosition() {
 
             $("#inputPositionName").empty();
             $("#inputPositionName").append(content);
+            // load cho ô tìm kiếm
+            $("#positionSearchID").empty();
+            $("#positionSearchID").append("<option value=''>Tất cả</option>");
+            $("#positionSearchID").append(content);
         },
         error: function (error) {
             alert("Call api get department thất bại");
