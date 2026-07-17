@@ -5,6 +5,8 @@ var baseUrl = "http://localhost:8080/accounts";
 var baseUrlDepartment = "http://localhost:8080/departments";
 var baseUrlPosition = "http://localhost:8080/positions";
 var baseAvt = "https://avatars.githubusercontent.com/u/3143871";
+var page = 0;
+var totalPages = 0;
 
 loadData();
 loadDepartment();
@@ -34,10 +36,9 @@ function loadData() {
     var emailSearch = $("#emailSearch").val();
     var departmentIdSearch = $("#departmentSearchID").val();
     var positionIdSearch = $("#positionSearchID").val();
+    var size = $("#inputnumberOfRecordId").val();
 
-    var subUrl = `?userName=${usernameSearch}&email=${emailSearch}&departmentId=${departmentIdSearch}
-    &positionId=${positionIdSearch}&fullName=${fullNameSearch}`;
-
+    var subUrl = `?userName=${usernameSearch}&email=${emailSearch}&departmentId=${departmentIdSearch}&positionId=${positionIdSearch}&fullName=${fullNameSearch}&page=${page}&size=${size}&sort=id,desc`;
     // call api đến mockapi.io đe lấy ds account
     // jqAjax
     $.ajax({
@@ -47,7 +48,8 @@ function loadData() {
         dataType: "JSON",
         success: function (response) {
             // call api thanh cong
-            accounts = response;
+            accounts = response.content;
+            totalPages = response.totalPages;
             var tableContent = "";
             for (let i = 0; i < accounts.length; i++) {
                 tableContent += "<tr>";
@@ -75,11 +77,60 @@ function loadData() {
             $("#tableBoby").empty();
             // jqAppend
             $("#tableBoby").append(tableContent);
+            buildPagination();
         },
         error: function (error) {
             alert("Call api get account thất bại");
         },
     });
+}
+
+function buildPagination() {
+    let html = "";
+
+    // Previous
+    if (page > 0) {
+        html += `
+            <li>
+                <a href="#" onclick="changePage(${page - 1})">
+                    &laquo;
+                </a>
+            </li>
+        `;
+    }
+
+    // Các số trang
+    for (let i = 0; i < totalPages; i++) {
+        html += `
+            <li class="${i === page ? "active" : ""}">
+                <a href="#" onclick="changePage(${i})">
+                    ${i + 1}
+                </a>
+            </li>
+        `;
+    }
+
+    // Next
+    if (page < totalPages - 1) {
+        html += `
+            <li>
+                <a href="#" onclick="changePage(${page + 1})">
+                    &raquo;
+                </a>
+            </li>
+        `;
+    }
+
+    $("#pagination").html(html);
+}
+
+function changePage(newPage) {
+    if (page === newPage) {
+        return;
+    }
+    page = newPage;
+
+    loadData();
 }
 
 function onDelete(idDelete) {

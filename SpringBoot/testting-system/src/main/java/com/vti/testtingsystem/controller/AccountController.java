@@ -5,6 +5,8 @@ import com.vti.testtingsystem.form.AccountCreateAndUpdateForm;
 import com.vti.testtingsystem.form.AccountSearchForm;
 import com.vti.testtingsystem.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +21,8 @@ public class AccountController {
     private AccountServiceImpl accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountDTO>> findAll(AccountSearchForm form) {
-        return ResponseEntity.ok(accountService.findAll(form));
+    public ResponseEntity<Page<AccountDTO>> findAll(AccountSearchForm form , Pageable pageable) {
+        return ResponseEntity.ok(accountService.findAll(form,pageable));
     }
 
     @GetMapping("/{id}")

@@ -3,6 +3,7 @@ package com.vti.testtingsystem.repository;
 import com.vti.testtingsystem.entity.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,11 @@ public interface IAccountRepository extends JpaRepository<Account, Integer>,JpaS
     boolean existsByDepartmentId(Integer departmentId);
 
     boolean existsByPositionId(Integer positionId);
+
+    @Query("FROM Account a where a.userName= :userName")
+    Account searchByUserName(String userName);
+
+
 
 
 }

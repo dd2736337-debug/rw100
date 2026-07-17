@@ -121,7 +121,10 @@
                     <button
                         type="button"
                         class="btn btn-default"
-                        onclick="loadData()"
+                        onclick="
+                            page = 0;
+                            loadData();
+                        "
                     >
                         Tìm kiếm
                     </button>
@@ -203,6 +206,31 @@
                     </div>
                 </div>
             </div>
+            <div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label
+                            for="inputnumberOfRecordId"
+                            class="col-sm-2 control-label"
+                            >Số bản ghi/trang:</label
+                        >
+                        <div class="col-sm-2">
+                            <select
+                                name="numberOfRecordId"
+                                id="inputnumberOfRecordId"
+                                class="form-control"
+                                required="required"
+                                onchange="loadData()"
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- bs3-table:.... -->
 
@@ -262,6 +290,28 @@
                     </tr> -->
                 </tbody>
             </table>
+
+            <!-- Phân trang -->
+
+            <ul class="pagination pagination-lg" id="pagination" style="align-items: center; display: flex; justify-content: center"></ul>
+
+            <!-- <ul
+                class="pagination pagination-lg"
+                id="pagination"
+                style="
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                "
+            >
+                <li><a href="#">&laquo;</a></li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">&raquo;</a></li>
+            </ul> -->
 
             <!-- bs3-modal -->
             <div class="modal fade" id="modal-id">
