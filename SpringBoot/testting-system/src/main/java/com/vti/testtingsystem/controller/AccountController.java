@@ -4,11 +4,13 @@ import com.vti.testtingsystem.dto.AccountDTO;
 import com.vti.testtingsystem.form.AccountCreateAndUpdateForm;
 import com.vti.testtingsystem.form.AccountSearchForm;
 import com.vti.testtingsystem.service.impl.AccountServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/accounts")
+@Validated
 public class AccountController {
     @Autowired
     private AccountServiceImpl accountService;
@@ -41,7 +44,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody AccountCreateAndUpdateForm form) {
+    public ResponseEntity<String> create(@RequestBody @Valid AccountCreateAndUpdateForm form) {
         accountService.create(form);
         return ResponseEntity.status(HttpStatus.CREATED).body("thêm mới thành công");
     }

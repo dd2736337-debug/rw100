@@ -67,6 +67,13 @@
             >
                 Dark
             </button>
+             <button
+                type="button"
+                class="btn btn-default"
+                onclick="logout()"
+            >
+                Logout
+            </button>
             <div class="form-group">
                 <legend>Quản lý account</legend>
             </div>
@@ -293,7 +300,15 @@
 
             <!-- Phân trang -->
 
-            <ul class="pagination pagination-lg" id="pagination" style="align-items: center; display: flex; justify-content: center"></ul>
+            <ul
+                class="pagination pagination-lg"
+                id="pagination"
+                style="
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                "
+            ></ul>
 
             <!-- <ul
                 class="pagination pagination-lg"
@@ -328,6 +343,7 @@
                             </button>
                             <h4 class="modal-title"></h4>
                         </div>
+
                         <div class="modal-body" style="padding: 0px">
                             <form
                                 id="accountForm"
@@ -373,6 +389,11 @@
                                                 class="form-control"
                                                 required
                                             />
+                                            <small
+                                                id="usernameDangerId"
+                                                class="text-danger"
+                                            >
+                                            </small>
                                         </div>
                                     </div>
 
@@ -390,7 +411,16 @@
                                                 class="form-control"
                                                 required
                                             />
+                                            <small
+                                                id="fullNameDangerId"
+                                                class="text-danger"
+                                            >
+                                            </small>
                                         </div>
+                                        <small
+                                            class="text-danger"
+                                            id="fullnameCreateDangerId"
+                                        ></small>
                                     </div>
 
                                     <div class="form-group">
@@ -409,6 +439,11 @@
                                                 required="required"
                                                 title=""
                                             />
+                                            <small
+                                                id="emailDangerId"
+                                                class="text-danger"
+                                            >
+                                            </small>
                                         </div>
                                     </div>
 

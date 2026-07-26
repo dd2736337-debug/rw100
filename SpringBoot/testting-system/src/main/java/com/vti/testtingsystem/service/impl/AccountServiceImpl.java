@@ -1,11 +1,15 @@
 package com.vti.testtingsystem.service.impl;
 
+import com.vti.testtingsystem.config.JWTUtils;
 import com.vti.testtingsystem.dto.AccountDTO;
+import com.vti.testtingsystem.dto.AccountLoginDTO;
 import com.vti.testtingsystem.entity.Account;
 import com.vti.testtingsystem.entity.Department;
 import com.vti.testtingsystem.entity.Position;
+import com.vti.testtingsystem.exception.BusinessException;
 import com.vti.testtingsystem.form.AccountCreateAndUpdateForm;
 import com.vti.testtingsystem.form.AccountSearchForm;
+import com.vti.testtingsystem.form.LoginForm;
 import com.vti.testtingsystem.repository.IAccountRepository;
 import com.vti.testtingsystem.repository.IDepartmentRepository;
 import com.vti.testtingsystem.repository.IPositionRepository;
@@ -17,12 +21,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements IAccountService {
     @Autowired
     private IAccountRepository repository;
@@ -34,6 +48,12 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JWTUtils jwtUtils;
 
     @Override
     public Page<AccountDTO> findAll(AccountSearchForm form, Pageable pageable) {
@@ -115,17 +135,19 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+
     public void create(AccountCreateAndUpdateForm form) {
         if (repository.existsByUserNameAndIdNot(form.getUserName(), null)) {
-            throw new RuntimeException("User Đã tồn tại");
+//            throw new RuntimeException("User Đã tồn tại");
+            throw BusinessException.builder().message("Username đã tồn tại ").build();
         }
         if (repository.existsByEmailAndIdNot(form.getEmail(), null)) {
-            throw new RuntimeException("Email Đã tồn tại");
+            throw BusinessException.builder().message("Email Đã tồn tại").build();
         }
         Department department = departmentRepository.findById(form.getDepartmentId())
-                .orElseThrow(() -> new RuntimeException("Department không tồn tại"));
+                .orElseThrow(() -> BusinessException.builder().message("Department không tồn tại").build());
         Position position = positionRepository.findById(form.getPositionId())
-                .orElseThrow(() -> new RuntimeException("Position không tồn tại"));
+                .orElseThrow(() -> BusinessException.builder().message("Position không tồn tại").build());
         Account account = new Account();
         account.setUserName(form.getUserName());
         account.setFullName(form.getFullName());
@@ -136,6 +158,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+
     public void update(AccountCreateAndUpdateForm form, Integer id) {
         Account account = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account không tồn tại"));
@@ -158,6 +181,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+
     public void delete(Integer id) {
         Account account = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Account không tồn tại"));
@@ -165,38 +189,21 @@ public class AccountServiceImpl implements IAccountService {
 
     }
 
+    @Override
+    public AccountLoginDTO login(LoginForm loginForm) {
+        //check xem username và password có đúng không
+        Authentication authentication=authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginForm.getUsername(),loginForm.getPassword()));
+        //gen token
+        String token= jwtUtils.generateToken(loginForm.getUsername());
 
-//    @Override
-//    public void create(AccountDto accountDto) {
-//        Department department = departmentRepository.findById(accountDto.getDepartmentId())
-//                .orElseThrow(() -> new RuntimeException("Department không tồn tại"));
-//        // tim póition
-//        Position position = positionRepository.findById(accountDto.getPositionId()).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
-//
-//        Account account = new Account();
-//        account.setUserName(accountDto.getUserName());
-//        account.setFullName(accountDto.getFullName());
-//        account.setEmail(accountDto.getEmail());
-//        account.setDepartment(department);
-//        account.setPosition(position);
-//
-//        repository.save(account);
-//    }
-//
-//    @Override
-//    public void update(AccountDto accountDto, Integer id) {
-//        Account account = repository.findById(id).orElseThrow(() -> new RuntimeException("Account không tồn tại"));
-//        Department department = departmentRepository.findById(accountDto.getDepartmentId()).orElseThrow(() -> new RuntimeException("Department không tồn tại"));
-//        // tim póition
-//        Position position = positionRepository.findById(accountDto.getPositionId()).orElseThrow(() -> new RuntimeException("Position không tồn tại"));
-//        account.setUserName(accountDto.getUserName());
-//        account.setFullName(accountDto.getFullName());
-//        account.setEmail(accountDto.getEmail());
-//        account.setDepartment(department);
-//        account.setPosition(position);// model mapper
-//        repository.save(account);
-//
-//    }
-//
+
+        return new AccountLoginDTO(loginForm.getUsername(),token);
+    }
+
+
+
+
+
 
 }

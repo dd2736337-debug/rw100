@@ -1,14 +1,18 @@
 package com.vti.testtingsystem.service;
 
 import com.vti.testtingsystem.dto.AccountDTO;
+import com.vti.testtingsystem.dto.AccountLoginDTO;
 import com.vti.testtingsystem.form.AccountCreateAndUpdateForm;
 import com.vti.testtingsystem.form.AccountSearchForm;
+import com.vti.testtingsystem.form.LoginForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
+import java.security.Principal;
 import java.util.List;
 
-public interface IAccountService {
+public interface IAccountService  {
     Page<AccountDTO> findAll (AccountSearchForm form, Pageable pageable);
 
     AccountDTO findById(Integer id);
@@ -22,4 +26,6 @@ public interface IAccountService {
     void update(AccountCreateAndUpdateForm form, Integer id);
 
     void delete(Integer id);
+
+    AccountLoginDTO login(LoginForm loginForm);
 }

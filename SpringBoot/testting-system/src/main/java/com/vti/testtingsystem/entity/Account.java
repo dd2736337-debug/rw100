@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vti.testtingsystem.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,11 +27,19 @@ public class Account {
     private String userName;
     @Column(name = "full_name", length = 100, nullable = false)
     private String fullName;
+
     @Column(name = "email", length = 100, nullable = false,unique = true)
     private String email;
     @CreationTimestamp
     @Column(name = "create_date",updatable = false)
     private LocalDateTime createDate;
+
+    @Column(name = "password")
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
 
     //username,.....
