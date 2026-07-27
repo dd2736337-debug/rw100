@@ -1,0 +1,81 @@
+```html
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Đăng ký</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="row vh-100 justify-content-center align-items-center">
+                <div class="col-md-5">
+                    <div class="card shadow">
+                        <div class="card-header text-center">
+                            <h3>ĐĂNG KÝ TÀI KHOẢN</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <input
+                                class="form-control mb-2"
+                                id="username"
+                                placeholder="Username"
+                            />
+
+                            <input
+                                class="form-control mb-2"
+                                id="password"
+                                type="password"
+                                placeholder="Password"
+                            />
+
+                            <input
+                                class="form-control mb-2"
+                                id="fullName"
+                                placeholder="Họ và tên"
+                            />
+
+                            <input
+                                class="form-control mb-2"
+                                id="email"
+                                placeholder="Email"
+                            />
+
+                            <input
+                                class="form-control mb-2"
+                                id="phone"
+                                placeholder="Số điện thoại"
+                            />
+
+                            <input
+                                class="form-control mb-3"
+                                id="address"
+                                placeholder="Địa chỉ"
+                            />
+
+                            <button
+                                class="btn btn-success w-100"
+                                onclick="register()"
+                            >
+                                Đăng ký
+                            </button>
+
+                            <div class="text-center mt-3">
+                                <a href="login.html"> Quay lại đăng nhập </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="./js/register.js"></script>
+    </body>
+</html>
+```

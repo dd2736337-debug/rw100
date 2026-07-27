@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Quản lý Category</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+    <body>
+        <div class="container mt-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h2>Quản lý Category</h2>
+
+                <button
+                    class="btn btn-success"
+                    data-bs-toggle="modal"
+                    data-bs-target="#categoryModal"
+                >
+                    Thêm Category
+                </button>
+            </div>
+
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="categoryTable"></tbody>
+            </table>
+        </div>
+
+        <!-- Modal -->
+
+        <div class="modal fade" id="categoryModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Category</h5>
+                    </div>
+
+                    <div class="modal-body">
+                        <input type="hidden" id="categoryId" />
+
+                        <div class="mb-3">
+                            <label>Tên Category</label>
+
+                            <input type="text" id="name" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button
+                            class="btn btn-primary"
+                            onclick="saveCategory()"
+                        >
+                            Lưu
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="./js/categories.js"></script>
+    </body>
+</html>
