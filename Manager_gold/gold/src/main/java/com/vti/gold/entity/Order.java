@@ -11,8 +11,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "oders")
-public class Oder {
+@Table(name = "orders")
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,7 +20,7 @@ public class Oder {
     private Double totalPrice;
 
     @Enumerated(EnumType.STRING)
-    private OderStatus status;
+    private OrderStatus status;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

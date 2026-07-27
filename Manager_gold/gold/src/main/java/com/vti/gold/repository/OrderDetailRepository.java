@@ -1,4 +1,7 @@
 package com.vti.gold.repository;
 
-public interface OrderDetailRepository {
+import com.vti.gold.entity.OrderDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface OrderDetailRepository extends JpaRepository<OrderDetail,Integer> {
 }

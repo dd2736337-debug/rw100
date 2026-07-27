@@ -1,5 +1,5 @@
 package com.vti.gold.entity;
 
-public enum OderStatus {
+public enum OrderStatus {
     PENDING,SUCCESS,CANCEL
 }
