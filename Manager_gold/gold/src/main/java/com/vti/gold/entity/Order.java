@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -21,6 +23,10 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

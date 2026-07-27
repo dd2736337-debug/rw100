@@ -16,9 +16,9 @@ public class Gold {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "name")
+    @Column(name = "name",nullable = false)
     private String name;
-    @Column(name = "type")
+    @Column(name = "type",nullable = false)
     private String type;
     @Column(name = "weight")
     private Double weight;
@@ -27,7 +27,9 @@ public class Gold {
     @Column(name = "quantity")
     private Integer quantity;
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id",nullable = false)
     private Category category;
+    @Column(name = "image")
+    private String image;
 
 }
