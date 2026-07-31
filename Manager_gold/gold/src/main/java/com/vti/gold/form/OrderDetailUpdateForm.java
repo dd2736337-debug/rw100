@@ -12,7 +12,4 @@ public class OrderDetailUpdateForm {
     @NotNull(message = "Số lượng không được để trống")
     private Integer quantity;
 
-
-    @NotNull(message = "Giá không được để trống")
-    private Double price;
 }

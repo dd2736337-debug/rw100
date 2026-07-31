@@ -23,8 +23,11 @@ public class GoldController {
 
     // Lấy danh sách vàng có phân trang
     @GetMapping
-    public Page<GoldDTO> findAll(@PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return goldService.findAll(pageable);
+    public Page<GoldDTO> findAll(@RequestParam(required = false) String name,
+
+                                 @RequestParam(required = false) String type,
+                                 @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return goldService.findAll(name, type, pageable);
     }
 
     @GetMapping("/{id}")
@@ -34,23 +37,24 @@ public class GoldController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void create(@Valid @ModelAttribute GoldCreateForm form) {
+    public GoldDTO create(@Valid @ModelAttribute GoldCreateForm form) {
 
-        goldService.create(form);
+        return goldService.create(form);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void update(@PathVariable Integer id,
+    public GoldDTO update(
+            @PathVariable Integer id,
+            @Valid @ModelAttribute GoldUpdateForm form
+    ) {
 
-                       @Valid @ModelAttribute GoldUpdateForm form) {
-
-        goldService.update(id, form);
+        return goldService.update(id, form);
     }
 
     @DeleteMapping("/{id}")
     public void delete(
             @PathVariable Integer id
-    ){
+    ) {
 
         goldService.delete(id);
     }

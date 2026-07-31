@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderUpdateForm {
-    @NotNull(message = "Tổng tiền không được để trống")
-    private Double totalPrice;
 
 
     @NotNull(message = "Trạng thái không được để trống")

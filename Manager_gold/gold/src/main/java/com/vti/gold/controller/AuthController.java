@@ -6,15 +6,22 @@ import com.vti.gold.dto.RegisterRequest;
 import com.vti.gold.entity.Role;
 import com.vti.gold.entity.User;
 import com.vti.gold.repository.UserRepository;
+import com.vti.gold.security.JwtTokenProvider;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin("*")
 public class AuthController {
+
+
     @Autowired
     private UserRepository userRepository;
 
@@ -22,73 +29,153 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Đăng ký tài khoản
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+
+    // ==========================
+    // REGISTER
+    // ==========================
+
     @PostMapping("/register")
-    public String register(@Valid @RequestBody RegisterRequest request) {
+    public ResponseEntity<String> register(
+            @Valid @RequestBody RegisterRequest request
+    ) {
+
 
         if (userRepository.existsByUsername(request.getUsername())) {
-            throw new RuntimeException("Username đã tồn tại!");
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Username đã tồn tại!"
+            );
         }
 
 
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email đã tồn tại!");
+        if (request.getEmail() != null
+                && userRepository.existsByEmail(request.getEmail())) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Email đã tồn tại!"
+            );
         }
 
 
         if (userRepository.existsByPhone(request.getPhone())) {
-            throw new RuntimeException("Số điện thoại đã tồn tại!");
+
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Số điện thoại đã tồn tại!"
+            );
         }
 
 
         User user = new User();
 
-        user.setUsername(request.getUsername());
 
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-
-        user.setFullName(request.getFullName());
+        user.setUsername(
+                request.getUsername()
+        );
 
 
-        user.setEmail(request.getEmail());
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getPassword()
+                )
+        );
 
 
-        user.setPhone(request.getPhone());
+        user.setFullName(
+                request.getFullName()
+        );
 
 
-        user.setAddress(request.getAddress());
+        user.setEmail(
+                request.getEmail()
+        );
 
 
-        // Người đăng ký mặc định là CUSTOMER
-        user.setRole(Role.CUSTOMER);
+        user.setPhone(
+                request.getPhone()
+        );
+
+
+        user.setAddress(
+                request.getAddress()
+        );
+
+
+        // Mặc định user đăng ký là CUSTOMER
+        user.setRole(
+                Role.CUSTOMER
+        );
 
 
         userRepository.save(user);
 
 
-        return "Đăng ký thành công";
+        return ResponseEntity.ok(
+                "Đăng ký thành công"
+        );
 
     }
 
 
-    // Đăng nhập
+    // ==========================
+    // LOGIN
+    // ==========================
+
     @PostMapping("/login")
-    public AuthResponse login(@Valid @RequestBody LoginRequest request) {
+    public AuthResponse login(
+            @Valid @RequestBody LoginRequest request
+    ) {
 
-        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new RuntimeException("Sai username hoặc password!"));
+
+        User user =
+                userRepository.findByUsername(
+                                request.getUsername()
+                        )
+                        .orElseThrow(() ->
+                                new ResponseStatusException(
+                                        HttpStatus.UNAUTHORIZED,
+                                        "Sai username hoặc password!"
+                                )
+                        );
 
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        boolean matches =
+                passwordEncoder.matches(
+                        request.getPassword(),
+                        user.getPassword()
+                );
 
-            throw new RuntimeException("Sai username hoặc password!");
+
+        if (!matches) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Sai username hoặc password!"
+            );
+
         }
 
 
-        // Tạm thời trả thông tin user
-        // bước JWT sẽ thêm token ở đây
+        String token =
+                jwtTokenProvider.generateToken(
+                        user.getUsername(),
+                        user.getRole().name()
+                );
 
-        return new AuthResponse("TOKEN_CHUA_TAO", user.getUsername(), user.getRole().name());
+
+        return new AuthResponse(
+                user.getId(),
+                token,
+                user.getUsername(),
+                user.getRole().name()
+        );
 
     }
+
 }

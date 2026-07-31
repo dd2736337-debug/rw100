@@ -1,6 +1,7 @@
 package com.vti.gold.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,7 +28,7 @@ public class User {
     private String password;
     @Column(name = "fullname", nullable = false)
     private String fullName;
-    @Column(name = "email", unique = true)
+    @Column(name = "email",nullable = false, unique = true)
     private String email;
     @Column(name = "phone", nullable = false, unique = true)
     private String phone;
@@ -33,9 +36,35 @@ public class User {
     private String address;
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+
+    @PrePersist
+    public void beforeCreate() {
+
+        createdAt = LocalDateTime.now();
+
+        updatedAt = LocalDateTime.now();
+        if (role == null) {
+            role = Role.CUSTOMER;
+        }
+
+    }
+
+    @PreUpdate
+    public void beforeUpdate() {
+
+        updatedAt = LocalDateTime.now();
+
+    }
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
+    private List<Order> orders = new ArrayList<>();
 
 }

@@ -12,6 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/order-details")
 @CrossOrigin("*")
@@ -31,11 +33,7 @@ public class OrderDetailController {
         return orderDetailService.findById(id);
     }
 
-    @PostMapping
-    public void create(@Valid @RequestBody OrderDetailCreateForm form) {
 
-        orderDetailService.create(form);
-    }
 
     @PutMapping("/{id}")
     public void update(@PathVariable Integer id,
@@ -49,6 +47,13 @@ public class OrderDetailController {
     public void delete(@PathVariable Integer id) {
 
         orderDetailService.delete(id);
+    }
+
+    @GetMapping("/order/{orderId}")
+    public List<OrderDetailDTO> findByOrderId(
+            @PathVariable Integer orderId) {
+
+        return orderDetailService.findByOrderId(orderId);
     }
 
 

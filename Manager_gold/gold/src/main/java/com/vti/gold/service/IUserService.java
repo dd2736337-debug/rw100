@@ -8,16 +8,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface IUserService {
-    Page<UserDTO> findAll(Pageable pageable);
+    Page<UserDTO> findAll(
+            String username,
+            String email,
+            String fullName,
+            Pageable pageable);
 
     UserDTO findById(Integer id);
 
-    void create(UserCreateForm form);
+    UserDTO create(UserCreateForm form);
 
-    void update( Integer id,UserUpdateForm form);
+    UserDTO update( Integer id,UserUpdateForm form);
 
     void delete(Integer id);
 
     void changePassword(Integer id, ChangePasswordForm form);
+
 
 }

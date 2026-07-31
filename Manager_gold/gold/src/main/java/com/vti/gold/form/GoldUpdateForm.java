@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,24 +27,25 @@ public class GoldUpdateForm {
 
     @NotNull(message = "Khối lượng không được để trống")
     @Positive(message = "Khối lượng phải lớn hơn 0")
-    private Double weight;
+    private BigDecimal weight;
 
 
     @NotNull(message = "Giá không được để trống")
     @Positive(message = "Giá phải lớn hơn 0")
-    private Double price;
+    private BigDecimal price;
 
 
     @NotNull(message = "Số lượng không được để trống")
     @Min(value = 0, message = "Số lượng không được âm")
     private Integer quantity;
 
+    @NotNull(message = "Category không được để trống")
+    private Integer categoryId;
+
 
     private MultipartFile image;
 
 
-    @NotNull(message = "Category không được để trống")
-    private Integer categoryId;
 
 
 }
