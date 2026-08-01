@@ -1,0 +1,1854 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Quản lý đơn hàng - Gold Store</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: #f5f6f8;
+                color: #333;
+            }
+
+            /* =====================================================
+               HEADER
+            ===================================================== */
+
+            .header {
+                background: #222;
+                color: white;
+                padding: 16px 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .admin-badge {
+                background: #d4af37;
+                color: #111;
+                padding: 7px 12px;
+                border-radius: 20px;
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            .logout-btn {
+                border: none;
+                background: #e53935;
+                color: white;
+                padding: 9px 15px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .logout-btn:hover {
+                background: #c62828;
+            }
+
+            /* =====================================================
+               CONTAINER
+            ===================================================== */
+
+            .container {
+                width: 95%;
+                max-width: 1400px;
+                margin: 30px auto;
+            }
+
+            .page-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 25px;
+                gap: 15px;
+            }
+
+            .page-header h2 {
+                margin: 0;
+                font-size: 28px;
+            }
+
+            .back-btn {
+                text-decoration: none;
+                background: #555;
+                color: white;
+                padding: 10px 16px;
+                border-radius: 7px;
+                font-weight: bold;
+            }
+
+            .back-btn:hover {
+                background: #333;
+            }
+
+            /* =====================================================
+               MESSAGE
+            ===================================================== */
+
+            .message {
+                display: none;
+                padding: 14px 18px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                font-weight: 500;
+            }
+
+            .message.success {
+                display: block;
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .message.error {
+                display: block;
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            /* =====================================================
+               FILTER
+            ===================================================== */
+
+            .filter-card {
+                background: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+                margin-bottom: 20px;
+            }
+
+            .filter-grid {
+                display: grid;
+                grid-template-columns: 1fr 220px auto auto;
+                gap: 12px;
+            }
+
+            .filter-grid input,
+            .filter-grid select {
+                width: 100%;
+                padding: 11px 12px;
+                border: 1px solid #ddd;
+                border-radius: 7px;
+                font-size: 14px;
+                outline: none;
+            }
+
+            .filter-grid input:focus,
+            .filter-grid select:focus {
+                border-color: #b8860b;
+            }
+
+            .btn {
+                border: none;
+                padding: 11px 17px;
+                border-radius: 7px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .btn-primary {
+                background: #b8860b;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #9f7309;
+            }
+
+            .btn-secondary {
+                background: #777;
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background: #555;
+            }
+
+            /* =====================================================
+               TABLE
+            ===================================================== */
+
+            .table-card {
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+                overflow: hidden;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 1000px;
+            }
+
+            th {
+                background: #fafafa;
+                padding: 14px 12px;
+                text-align: left;
+                font-size: 14px;
+                border-bottom: 1px solid #eee;
+            }
+
+            td {
+                padding: 14px 12px;
+                border-bottom: 1px solid #eee;
+                vertical-align: middle;
+                font-size: 14px;
+            }
+
+            tr:hover {
+                background: #fafafa;
+            }
+
+            .empty {
+                text-align: center;
+                padding: 45px;
+                color: #777;
+            }
+
+            /* =====================================================
+               STATUS
+            ===================================================== */
+
+            .status {
+                display: inline-block;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 12px;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+
+            .status-PENDING {
+                background: #fff3cd;
+                color: #856404;
+            }
+
+            .status-CONFIRMED {
+                background: #dbeafe;
+                color: #1d4ed8;
+            }
+
+            .status-SHIPPING {
+                background: #ede9fe;
+                color: #6d28d9;
+            }
+
+            .status-SUCCESS {
+                background: #dcfce7;
+                color: #166534;
+            }
+
+            .status-CANCEL {
+                background: #fee2e2;
+                color: #991b1b;
+            }
+
+            /* =====================================================
+               ACTION
+            ===================================================== */
+
+            .actions {
+                display: flex;
+                gap: 7px;
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                border: none;
+                padding: 7px 10px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 12px;
+                font-weight: bold;
+            }
+
+            .view-btn {
+                background: #1976d2;
+                color: white;
+            }
+
+            .edit-btn {
+                background: #b8860b;
+                color: white;
+            }
+
+            .delete-btn {
+                background: #e53935;
+                color: white;
+            }
+
+            .action-btn:hover {
+                opacity: 0.9;
+            }
+
+            /* =====================================================
+               PAGINATION
+            ===================================================== */
+
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 12px;
+                padding: 20px;
+            }
+
+            .page-btn {
+                border: none;
+                background: #eee;
+                padding: 9px 14px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .page-btn:hover:not(:disabled) {
+                background: #ddd;
+            }
+
+            .page-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            .page-info {
+                font-weight: bold;
+            }
+
+            /* =====================================================
+               MODAL
+            ===================================================== */
+
+            .modal {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.55);
+                z-index: 9999;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background: white;
+                width: 100%;
+                max-width: 900px;
+                max-height: 90vh;
+                overflow-y: auto;
+                border-radius: 12px;
+                padding: 25px;
+            }
+
+            .modal-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .modal-header h3 {
+                margin: 0;
+            }
+
+            .close-btn {
+                border: none;
+                background: transparent;
+                font-size: 28px;
+                cursor: pointer;
+                color: #555;
+            }
+
+            .close-btn:hover {
+                color: #000;
+            }
+
+            /* =====================================================
+               ORDER INFO
+            ===================================================== */
+
+            .order-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .info-box {
+                background: #f7f7f7;
+                padding: 12px;
+                border-radius: 7px;
+            }
+
+            .info-label {
+                color: #777;
+                font-size: 12px;
+                margin-bottom: 5px;
+            }
+
+            .info-value {
+                font-weight: bold;
+            }
+
+            /* =====================================================
+               DETAIL TABLE
+            ===================================================== */
+
+            .detail-table {
+                width: 100%;
+                min-width: 650px;
+            }
+
+            .detail-table th,
+            .detail-table td {
+                padding: 10px;
+            }
+
+            /* =====================================================
+               GOLD IMAGE
+            ===================================================== */
+
+            .gold-image-wrapper {
+                width: 65px;
+                height: 65px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f1f1f1;
+                border-radius: 8px;
+                overflow: hidden;
+            }
+
+            .gold-image {
+                width: 65px;
+                height: 65px;
+                object-fit: cover;
+                border-radius: 8px;
+                display: block;
+            }
+
+            .image-placeholder {
+                width: 65px;
+                height: 65px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 5px;
+                color: #999;
+                background: #eee;
+                border-radius: 8px;
+                font-size: 10px;
+            }
+
+            /* =====================================================
+               STATUS UPDATE
+            ===================================================== */
+
+            .status-form {
+                margin-top: 20px;
+                padding-top: 20px;
+                border-top: 1px solid #eee;
+            }
+
+            .status-form select {
+                width: 100%;
+                padding: 11px;
+                border: 1px solid #ddd;
+                border-radius: 7px;
+                margin-bottom: 12px;
+            }
+
+            /* =====================================================
+               LOADING
+            ===================================================== */
+
+            .loading {
+                padding: 45px;
+                text-align: center;
+                color: #777;
+            }
+
+            .detail-loading {
+                padding: 40px;
+                text-align: center;
+                color: #777;
+            }
+
+            /* =====================================================
+               RESPONSIVE
+            ===================================================== */
+
+            @media (max-width: 850px) {
+                .filter-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .page-header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                .order-info {
+                    grid-template-columns: 1fr;
+                }
+
+                .header {
+                    padding: 14px;
+                }
+
+                .header h1 {
+                    font-size: 18px;
+                }
+
+                .header-right {
+                    gap: 8px;
+                }
+
+                .container {
+                    width: 96%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- =====================================================
+             HEADER
+        ===================================================== -->
+
+        <header class="header">
+            <h1>Gold Store - Quản trị</h1>
+
+            <div class="header-right">
+                <span class="admin-badge"> ADMIN </span>
+
+                <span id="adminUsername"> --- </span>
+
+                <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+            </div>
+        </header>
+
+        <!-- =====================================================
+             MAIN
+        ===================================================== -->
+
+        <main class="container">
+            <div class="page-header">
+                <h2>Quản lý đơn hàng</h2>
+
+                <a href="users.html" class="back-btn"> Quản lý người dùng </a>
+            </div>
+
+            <!-- MESSAGE -->
+
+            <div id="message" class="message"></div>
+
+            <!-- =================================================
+                 FILTER
+            ================================================== -->
+
+            <div class="filter-card">
+                <div class="filter-grid">
+                    <input
+                        type="text"
+                        id="usernameSearch"
+                        placeholder="Tìm theo username khách hàng..."
+                    />
+
+                    <select id="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+
+                        <option value="PENDING">PENDING</option>
+
+                        <option value="CONFIRMED">CONFIRMED</option>
+
+                        <option value="SHIPPING">SHIPPING</option>
+
+                        <option value="SUCCESS">SUCCESS</option>
+
+                        <option value="CANCEL">CANCEL</option>
+                    </select>
+
+                    <button class="btn btn-primary" onclick="searchOrders()">
+                        Tìm kiếm
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="resetSearch()">
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+
+            <!-- =================================================
+                 TABLE
+            ================================================== -->
+
+            <div class="table-card">
+                <div id="loading" class="loading">
+                    Đang tải danh sách đơn hàng...
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="ordersTable" style="display: none">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+
+                                <th>Khách hàng</th>
+
+                                <th>Số sản phẩm</th>
+
+                                <th>Tổng tiền</th>
+
+                                <th>Trạng thái</th>
+
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="empty" class="empty" style="display: none">
+                    Không tìm thấy đơn hàng.
+                </div>
+
+                <!-- PAGINATION -->
+
+                <div id="pagination" class="pagination" style="display: none">
+                    <button
+                        id="previousButton"
+                        class="page-btn"
+                        onclick="previousPage()"
+                    >
+                        ← Trước
+                    </button>
+
+                    <span id="pageInfo" class="page-info"> Trang 1 </span>
+
+                    <button
+                        id="nextButton"
+                        class="page-btn"
+                        onclick="nextPage()"
+                    >
+                        Sau →
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- =====================================================
+             DETAIL MODAL
+        ===================================================== -->
+
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Chi tiết đơn hàng</h3>
+
+                    <button class="close-btn" onclick="closeModal()">×</button>
+                </div>
+
+                <div id="detailContent"></div>
+            </div>
+        </div>
+
+        <!-- =====================================================
+             JAVASCRIPT
+        ===================================================== -->
+
+        <script>
+            /* =====================================================
+               CONFIG
+            ===================================================== */
+
+            const API_BASE_URL = "http://localhost:8080/api";
+
+            const BACKEND_BASE_URL = "http://localhost:8080";
+
+            const PAGE_SIZE = 5;
+
+            let currentPage = 0;
+
+            let totalPages = 0;
+
+            /* =====================================================
+               DOM
+            ===================================================== */
+
+            const loading = document.getElementById("loading");
+
+            const ordersTable = document.getElementById("ordersTable");
+
+            const ordersBody = document.getElementById("ordersBody");
+
+            const empty = document.getElementById("empty");
+
+            const pagination = document.getElementById("pagination");
+
+            const message = document.getElementById("message");
+
+            const detailModal = document.getElementById("detailModal");
+
+            const detailContent = document.getElementById("detailContent");
+
+            /* =====================================================
+               TOKEN
+            ===================================================== */
+
+            function getToken() {
+                return (
+                    localStorage.getItem("token") ||
+                    localStorage.getItem("accessToken")
+                );
+            }
+
+            /* =====================================================
+               ROLE
+            ===================================================== */
+
+            function getRole() {
+                let role = localStorage.getItem("role");
+
+                if (!role) {
+                    return null;
+                }
+
+                role = role.replace("ROLE_", "").toUpperCase();
+
+                return role;
+            }
+
+            /* =====================================================
+               USERNAME
+            ===================================================== */
+
+            function getUsername() {
+                return localStorage.getItem("username") || "---";
+            }
+
+            /* =====================================================
+               CHECK ADMIN
+            ===================================================== */
+
+            function checkAdmin() {
+                const token = getToken();
+
+                const role = getRole();
+
+                if (!token) {
+                    alert("Bạn chưa đăng nhập.");
+
+                    window.location.href = "../login.html";
+
+                    return false;
+                }
+
+                if (role !== "ADMIN") {
+                    alert("Bạn không có quyền truy cập trang quản lý.");
+
+                    window.location.href = "../customer/products.html";
+
+                    return false;
+                }
+
+                document.getElementById("adminUsername").textContent =
+                    getUsername();
+
+                return true;
+            }
+
+            /* =====================================================
+               MESSAGE
+            ===================================================== */
+
+            function showMessage(text, type = "error") {
+                message.textContent = text;
+
+                message.className = "message " + type;
+            }
+
+            function hideMessage() {
+                message.textContent = "";
+
+                message.className = "message";
+            }
+
+            /* =====================================================
+               PARSE RESPONSE
+            ===================================================== */
+
+            async function parseResponse(response) {
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    return await response.json();
+                }
+
+                const text = await response.text();
+
+                return {
+                    message: text,
+                };
+            }
+
+            /* =====================================================
+               ESCAPE HTML
+            ===================================================== */
+
+            function escapeHtml(value) {
+                return String(value ?? "")
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            /* =====================================================
+               MONEY
+            ===================================================== */
+
+            function formatMoney(value) {
+                if (value === null || value === undefined) {
+                    return "0 ₫";
+                }
+
+                const number = Number(value);
+
+                if (Number.isNaN(number)) {
+                    return "0 ₫";
+                }
+
+                return number.toLocaleString("vi-VN") + " ₫";
+            }
+
+            /* =====================================================
+               GOLD IMAGE URL
+            ===================================================== */
+
+            function getGoldImageUrl(image) {
+                if (image === null || image === undefined) {
+                    return null;
+                }
+
+                image = String(image).trim();
+
+                if (!image) {
+                    return null;
+                }
+
+                /*
+                 * Backend đã trả URL đầy đủ
+                 *
+                 * Ví dụ:
+                 * http://localhost:8080/uploads/a.jpg
+                 */
+
+                if (
+                    image.startsWith("http://") ||
+                    image.startsWith("https://")
+                ) {
+                    return image;
+                }
+
+                /*
+                 * /uploads/a.jpg
+                 */
+
+                if (image.startsWith("/uploads/")) {
+                    return BACKEND_BASE_URL + image;
+                }
+
+                /*
+                 * uploads/a.jpg
+                 */
+
+                if (image.startsWith("uploads/")) {
+                    return BACKEND_BASE_URL + "/" + image;
+                }
+
+                /*
+                 * Nếu backend chỉ trả:
+                 *
+                 * a.jpg
+                 *
+                 * thì mặc định ảnh nằm:
+                 *
+                 * /uploads/a.jpg
+                 */
+
+                return BACKEND_BASE_URL + "/uploads/" + image;
+            }
+
+            /* =====================================================
+               IMAGE HTML
+            ===================================================== */
+
+            function createGoldImage(image, goldName) {
+                const imageUrl = getGoldImageUrl(image);
+
+                if (!imageUrl) {
+                    return `
+                        <div class="gold-image-wrapper">
+                            <div class="image-placeholder">
+                                Không có ảnh
+                            </div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="gold-image-wrapper">
+
+                        <img
+                            class="gold-image"
+                            src="${escapeHtml(imageUrl)}"
+                            alt="${escapeHtml(goldName || "Vàng")}"
+                            loading="lazy"
+                            onerror="
+                                this.style.display='none';
+                                this.nextElementSibling.style.display='flex';
+                            "
+                        >
+
+                        <div
+                            class="image-placeholder"
+                            style="display:none;">
+                            Không tải được ảnh
+                        </div>
+
+                    </div>
+                `;
+            }
+
+            /* =====================================================
+               LOAD ORDERS
+            ===================================================== */
+
+            async function loadOrders() {
+                hideMessage();
+
+                loading.style.display = "block";
+
+                ordersTable.style.display = "none";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "none";
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Phiên đăng nhập không tồn tại.");
+
+                    loading.style.display = "none";
+
+                    return;
+                }
+
+                const username = document
+                    .getElementById("usernameSearch")
+                    .value.trim();
+
+                const status = document.getElementById("statusFilter").value;
+
+                const params = new URLSearchParams();
+
+                params.append("page", currentPage);
+
+                params.append("size", PAGE_SIZE);
+
+                params.append("sort", "id,desc");
+
+                if (username) {
+                    params.append("username", username);
+                }
+
+                if (status) {
+                    params.append("status", status);
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/orders?${params.toString()}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Orders response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error(
+                                "Bạn không có quyền quản lý đơn hàng.",
+                            );
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể tải danh sách đơn hàng.",
+                        );
+                    }
+
+                    const orders = Array.isArray(data.content)
+                        ? data.content
+                        : [];
+
+                    totalPages = Number(data.totalPages || 0);
+
+                    renderOrders(orders);
+
+                    updatePagination();
+                } catch (error) {
+                    console.error("Load orders error:", error);
+
+                    showMessage(error.message || "Có lỗi khi tải đơn hàng.");
+                } finally {
+                    loading.style.display = "none";
+                }
+            }
+
+            /* =====================================================
+               RENDER ORDERS
+            ===================================================== */
+
+            function renderOrders(orders) {
+                ordersBody.innerHTML = "";
+
+                if (!orders || !orders.length) {
+                    ordersTable.style.display = "none";
+
+                    empty.style.display = "block";
+
+                    pagination.style.display = "none";
+
+                    return;
+                }
+
+                ordersTable.style.display = "table";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "flex";
+
+                orders.forEach((order) => {
+                    const row = document.createElement("tr");
+
+                    const details = Array.isArray(order.orderDetails)
+                        ? order.orderDetails
+                        : [];
+
+                    const username = escapeHtml(
+                        order.username || "Không xác định",
+                    );
+
+                    const status = order.status || "UNKNOWN";
+
+                    row.innerHTML = `
+
+                            <td>
+                                <strong>
+                                    #${order.id}
+                                </strong>
+                            </td>
+
+                            <td>
+
+                                ${username}
+
+                                <br>
+
+                                <small>
+                                    User ID:
+                                    ${escapeHtml(order.userId ?? "---")}
+                                </small>
+
+                            </td>
+
+                            <td>
+                                ${details.length}
+                            </td>
+
+                            <td>
+
+                                <strong>
+                                    ${formatMoney(order.totalPrice)}
+                                </strong>
+
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="status status-${escapeHtml(status)}">
+                                    ${escapeHtml(status)}
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <button
+                                        class="action-btn view-btn"
+                                        onclick="viewOrder(${order.id})">
+
+                                        Xem
+
+                                    </button>
+
+                                    <button
+                                        class="action-btn edit-btn"
+                                        onclick="editOrder(${order.id})">
+
+                                        Trạng thái
+
+                                    </button>
+
+                                    <button
+                                        class="action-btn delete-btn"
+                                        onclick="deleteOrder(${order.id})">
+
+                                        Xóa
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        `;
+
+                    ordersBody.appendChild(row);
+                });
+            }
+
+            /* =====================================================
+               VIEW ORDER
+            ===================================================== */
+
+            async function viewOrder(id) {
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Phiên đăng nhập không tồn tại.");
+
+                    return;
+                }
+
+                detailModal.classList.add("show");
+
+                detailContent.innerHTML = `
+                    <div class="detail-loading">
+                        Đang tải chi tiết đơn hàng...
+                    </div>
+                `;
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/orders/${id}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Order detail response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error("Bạn không có quyền xem đơn hàng.");
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể xem đơn hàng.",
+                        );
+                    }
+
+                    renderOrderDetail(data);
+                } catch (error) {
+                    console.error("View order error:", error);
+
+                    detailContent.innerHTML = `
+                        <div class="message error">
+                            ${escapeHtml(
+                                error.message ||
+                                    "Không thể xem chi tiết đơn hàng.",
+                            )}
+                        </div>
+                    `;
+                }
+            }
+
+            /* =====================================================
+               RENDER ORDER DETAIL
+            ===================================================== */
+
+            function renderOrderDetail(order) {
+                console.log("FULL ORDER DETAIL:", order);
+
+                const details = Array.isArray(order.orderDetails)
+                    ? order.orderDetails
+                    : [];
+
+                let rows = "";
+
+                details.forEach((detail) => {
+                    console.log("ORDER DETAIL ITEM:", detail);
+
+                    console.log("GOLD IMAGE:", detail.goldImage);
+
+                    const image = createGoldImage(
+                        detail.goldImage,
+                        detail.goldName,
+                    );
+
+                    const price = Number(detail.price || 0);
+
+                    const quantity = Number(detail.quantity || 0);
+
+                    const subtotal = price * quantity;
+
+                    rows += `
+
+                            <tr>
+
+                                <td>
+
+                                    ${image}
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+                                        ${escapeHtml(
+                                            detail.goldName || "Sản phẩm",
+                                        )}
+                                    </strong>
+
+                                    <br>
+
+                                    <small>
+                                        Gold ID:
+                                        ${escapeHtml(detail.goldId ?? "---")}
+                                    </small>
+
+                                </td>
+
+
+                                <td>
+
+                                    ${formatMoney(detail.price)}
+
+                                </td>
+
+
+                                <td>
+
+                                    ${quantity}
+
+                                </td>
+
+
+                                <td>
+
+                                    <strong>
+                                        ${formatMoney(subtotal)}
+                                    </strong>
+
+                                </td>
+
+                            </tr>
+
+                        `;
+                });
+
+                if (!rows) {
+                    rows = `
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                style="
+                                    text-align:center;
+                                    padding:30px;
+                                    color:#777;
+                                ">
+
+                                Không có sản phẩm
+
+                            </td>
+
+                        </tr>
+
+                    `;
+                }
+
+                const status = order.status || "UNKNOWN";
+
+                detailContent.innerHTML = `
+
+                    <div class="order-info">
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                Mã đơn hàng
+                            </div>
+
+                            <div class="info-value">
+                                #${escapeHtml(order.id)}
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                Trạng thái
+                            </div>
+
+                            <div class="info-value">
+
+                                <span
+                                    class="status status-${escapeHtml(status)}">
+
+                                    ${escapeHtml(status)}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                Username
+                            </div>
+
+                            <div class="info-value">
+
+                                ${escapeHtml(order.username || "---")}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                Họ tên
+                            </div>
+
+                            <div class="info-value">
+
+                                ${escapeHtml(order.fullName || "---")}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                User ID
+                            </div>
+
+                            <div class="info-value">
+
+                                ${escapeHtml(order.userId ?? "---")}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <div class="info-label">
+                                Tổng tiền
+                            </div>
+
+                            <div class="info-value">
+
+                                ${formatMoney(order.totalPrice)}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <h4>
+                        Sản phẩm
+                    </h4>
+
+
+                    <div class="table-wrapper">
+
+                        <table class="detail-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Ảnh
+                                    </th>
+
+                                    <th>
+                                        Sản phẩm
+                                    </th>
+
+                                    <th>
+                                        Đơn giá
+                                    </th>
+
+                                    <th>
+                                        Số lượng
+                                    </th>
+
+                                    <th>
+                                        Thành tiền
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                ${rows}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="status-form">
+
+                        <h4>
+                            Cập nhật trạng thái
+                        </h4>
+
+
+                        <select id="modalStatus">
+
+                            <option
+                                value="PENDING"
+                                ${status === "PENDING" ? "selected" : ""}>
+
+                                PENDING
+
+                            </option>
+
+
+                            <option
+                                value="CONFIRMED"
+                                ${status === "CONFIRMED" ? "selected" : ""}>
+
+                                CONFIRMED
+
+                            </option>
+
+
+                            <option
+                                value="SHIPPING"
+                                ${status === "SHIPPING" ? "selected" : ""}>
+
+                                SHIPPING
+
+                            </option>
+
+
+                            <option
+                                value="COMPLETED"
+                                ${status === "COMPLETED" ? "selected" : ""}>
+
+                                COMPLETED
+
+                            </option>
+
+
+                            <option
+                                value="CANCELLED"
+                                ${status === "CANCELLED" ? "selected" : ""}>
+
+                                CANCELLED
+
+                            </option>
+
+                        </select>
+
+
+                        <button
+                            class="btn btn-primary"
+                            onclick="updateOrderStatus(${order.id})">
+
+                            Lưu trạng thái
+
+                        </button>
+
+                    </div>
+
+                `;
+            }
+
+            /* =====================================================
+               EDIT ORDER
+            ===================================================== */
+
+            function editOrder(id) {
+                viewOrder(id);
+            }
+
+            /* =====================================================
+               UPDATE STATUS
+            ===================================================== */
+
+            async function updateOrderStatus(id) {
+                const token = getToken();
+
+                const statusElement = document.getElementById("modalStatus");
+
+                if (!statusElement) {
+                    return;
+                }
+
+                const status = statusElement.value;
+
+                if (!status) {
+                    showMessage("Vui lòng chọn trạng thái.");
+
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/orders/${id}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                "Content-Type": "application/json",
+
+                                Accept: "application/json",
+                            },
+
+                            body: JSON.stringify({
+                                status: status,
+                            }),
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Update order response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error(
+                                "Bạn không có quyền cập nhật đơn hàng.",
+                            );
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Cập nhật trạng thái thất bại.",
+                        );
+                    }
+
+                    showMessage(
+                        "Cập nhật trạng thái đơn hàng thành công!",
+                        "success",
+                    );
+
+                    closeModal();
+
+                    await loadOrders();
+                } catch (error) {
+                    console.error("Update order error:", error);
+
+                    showMessage(
+                        error.message || "Cập nhật trạng thái thất bại.",
+                    );
+                }
+            }
+
+            /* =====================================================
+               DELETE ORDER
+            ===================================================== */
+
+            async function deleteOrder(id) {
+                const confirmed = confirm(
+                    `Bạn có chắc muốn xóa đơn hàng #${id}?\n\nSố lượng vàng trong đơn sẽ được hoàn lại kho.`,
+                );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                const token = getToken();
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/orders/${id}`,
+                        {
+                            method: "DELETE",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "*/*",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Delete order response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error("Bạn không có quyền xóa đơn hàng.");
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Xóa đơn hàng thất bại.",
+                        );
+                    }
+
+                    showMessage(
+                        data?.message || `Đã xóa đơn hàng #${id} thành công.`,
+                        "success",
+                    );
+
+                    await loadOrders();
+                } catch (error) {
+                    console.error("Delete order error:", error);
+
+                    showMessage(error.message || "Xóa đơn hàng thất bại.");
+                }
+            }
+
+            /* =====================================================
+               SEARCH
+            ===================================================== */
+
+            function searchOrders() {
+                currentPage = 0;
+
+                loadOrders();
+            }
+
+            /* =====================================================
+               RESET
+            ===================================================== */
+
+            function resetSearch() {
+                document.getElementById("usernameSearch").value = "";
+
+                document.getElementById("statusFilter").value = "";
+
+                currentPage = 0;
+
+                loadOrders();
+            }
+
+            /* =====================================================
+               PAGINATION
+            ===================================================== */
+
+            function updatePagination() {
+                const pageInfo = document.getElementById("pageInfo");
+
+                const previous = document.getElementById("previousButton");
+
+                const next = document.getElementById("nextButton");
+
+                pageInfo.textContent =
+                    totalPages === 0
+                        ? "Không có trang"
+                        : `Trang ${currentPage + 1} / ${totalPages}`;
+
+                previous.disabled = currentPage <= 0;
+
+                next.disabled = currentPage >= totalPages - 1;
+            }
+
+            function previousPage() {
+                if (currentPage <= 0) {
+                    return;
+                }
+
+                currentPage--;
+
+                loadOrders();
+            }
+
+            function nextPage() {
+                if (currentPage >= totalPages - 1) {
+                    return;
+                }
+
+                currentPage++;
+
+                loadOrders();
+            }
+
+            /* =====================================================
+               CLOSE MODAL
+            ===================================================== */
+
+            function closeModal() {
+                detailModal.classList.remove("show");
+
+                detailContent.innerHTML = "";
+            }
+
+            /* =====================================================
+               CLICK OUTSIDE MODAL
+            ===================================================== */
+
+            detailModal.addEventListener("click", function (event) {
+                if (event.target === detailModal) {
+                    closeModal();
+                }
+            });
+
+            /* =====================================================
+               ESC KEY
+            ===================================================== */
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeModal();
+                }
+            });
+
+            /* =====================================================
+               ENTER SEARCH
+            ===================================================== */
+
+            document
+                .getElementById("usernameSearch")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        searchOrders();
+                    }
+                });
+
+            /* =====================================================
+               LOGOUT
+            ===================================================== */
+
+            function logout() {
+                localStorage.removeItem("token");
+
+                localStorage.removeItem("accessToken");
+
+                localStorage.removeItem("userId");
+
+                localStorage.removeItem("username");
+
+                localStorage.removeItem("role");
+
+                window.location.href = "../login.html";
+            }
+
+            /* =====================================================
+               START
+            ===================================================== */
+
+            if (checkAdmin()) {
+                loadOrders();
+            }
+        </script>
+    </body>
+</html>

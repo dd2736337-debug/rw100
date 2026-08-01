@@ -1,6 +1,5 @@
 package com.vti.gold.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +16,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-
 import java.util.List;
-
 
 @Configuration
 public class SecurityConfig {
@@ -28,250 +25,186 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-
-    // ================================
-    // PASSWORD ENCODER
-    // ================================
-
+// =========================================================
+// PASSWORD ENCODER
+// =========================================================
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
-
         return new BCryptPasswordEncoder();
-
-
     }
 
-
-    // ================================
-    // SECURITY CONFIG
-    // ================================
-
+// =========================================================
+// SECURITY FILTER CHAIN
+// =========================================================
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-
         http
 
-
+                // =================================================
                 // CORS
+                // =================================================
 
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-
-                // REST API disable CSRF
+                // =================================================
+                // CSRF
+                // =================================================
 
                 .csrf(csrf -> csrf.disable())
 
+                // =================================================
+                // SESSION
+                // =================================================
 
-                // JWT Stateless
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .sessionManagement(session ->
-
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
-                )
-
-
+                // =================================================
                 // AUTHORIZATION
+                // =================================================
 
                 .authorizeHttpRequests(auth -> auth
 
-
-                        // OPTIONS CORS
+                        // -------------------------------------------------
+                        // CORS PREFLIGHT
+                        // -------------------------------------------------
 
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-
-                        // LOGIN + REGISTER
+                        // -------------------------------------------------
+                        // AUTH
+                        // -------------------------------------------------
 
                         .requestMatchers("/api/auth/**").permitAll()
 
-
-                        // IMAGE
+                        // -------------------------------------------------
+                        // UPLOADS
+                        // -------------------------------------------------
 
                         .requestMatchers("/uploads/**").permitAll()
 
-
-                        // =====================
+                        // =================================================
                         // GOLD
-                        // =====================
-
+                        // =================================================
 
                         // CUSTOMER + ADMIN xem vàng
-
-                        .requestMatchers(HttpMethod.GET, "/api/golds/**").hasAnyRole("ADMIN", "CUSTOMER")
-
+                        .requestMatchers(HttpMethod.GET, "/api/golds/**").permitAll()
 
                         // ADMIN thêm vàng
-
                         .requestMatchers(HttpMethod.POST, "/api/golds/**").hasRole("ADMIN")
 
-
                         // ADMIN sửa vàng
-
                         .requestMatchers(HttpMethod.PUT, "/api/golds/**").hasRole("ADMIN")
 
-
                         // ADMIN xóa vàng
-
                         .requestMatchers(HttpMethod.DELETE, "/api/golds/**").hasRole("ADMIN")
 
-
-                        // =====================
+                        // =================================================
                         // ORDER
-                        // =====================
+                        // =================================================
 
-
-                        // CUSTOMER tạo đơn
-
+                        // CUSTOMER + ADMIN tạo đơn
                         .requestMatchers(HttpMethod.POST, "/api/orders/**").hasAnyRole("ADMIN", "CUSTOMER")
 
-
-                        // CUSTOMER xem đơn của mình
-
-                        .requestMatchers(HttpMethod.GET, "/api/orders/my/**").hasRole("CUSTOMER")
-
+                        // CUSTOMER + ADMIN xem đơn theo user
+                        .requestMatchers(HttpMethod.GET, "/api/orders/user/**").hasAnyRole("ADMIN", "CUSTOMER")
 
                         // ADMIN xem tất cả đơn
-
                         .requestMatchers(HttpMethod.GET, "/api/orders/**").hasRole("ADMIN")
 
-
-                        // ADMIN cập nhật trạng thái
-
+                        // ADMIN cập nhật đơn
                         .requestMatchers(HttpMethod.PUT, "/api/orders/**").hasRole("ADMIN")
 
-
                         // ADMIN xóa đơn
-
                         .requestMatchers(HttpMethod.DELETE, "/api/orders/**").hasRole("ADMIN")
 
+                        // =================================================
+                        // USERS
+                        // =================================================
 
-                        // Các API còn lại bắt buộc login
+                        // CUSTOMER + ADMIN xem thông tin user
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("ADMIN", "CUSTOMER")
 
-                        .anyRequest().authenticated()
+                        // CUSTOMER + ADMIN đổi mật khẩu
+                        //
+                        // Quan trọng:
+                        // endpoint này phải được khai báo TRƯỚC
+                        // PUT /api/users/**
+                        //
+                        .requestMatchers(HttpMethod.PUT, "/api/users/*/change-password").hasAnyRole("ADMIN", "CUSTOMER")
 
+                        // ADMIN cập nhật thông tin user
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN")
 
-                )
+                        // ADMIN tạo user
+                        .requestMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")
 
+                        // ADMIN xóa user
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
 
+                        // =================================================
+                        // CÁC API KHÁC
+                        // =================================================
+
+                        // =================================================
+                        // USER MANAGEMENT
+                        // =================================================
+
+                         // ADMIN quản lý người dùng
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
+
+                        .anyRequest().authenticated())
+
+                // =================================================
                 // JWT FILTER
+                // =================================================
 
-
-                .addFilterBefore(
-
-                        jwtAuthenticationFilter,
-
-                        UsernamePasswordAuthenticationFilter.class
-
-                );
-
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-
-
     }
 
-
-    // ================================
-    // CORS CONFIG
-    // ================================
-
+// =========================================================
+// CORS CONFIGURATION
+// =========================================================
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-
         CorsConfiguration configuration = new CorsConfiguration();
 
+        configuration.setAllowedOrigins(List.of("http://localhost:5500", "http://127.0.0.1:5500", "http://localhost:5501", "http://127.0.0.1:5501"));
 
-        configuration.setAllowedOrigins(
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-                List.of(
-
-                        "http://localhost:5500",
-
-                        "http://127.0.0.1:5500",
-
-                        "http://localhost:5501",
-
-                        "http://127.0.0.1:5501"
-
-                )
-
-        );
-
-
-        configuration.setAllowedMethods(
-
-                List.of(
-
-                        "GET",
-
-                        "POST",
-
-                        "PUT",
-
-                        "DELETE",
-
-                        "OPTIONS"
-
-                )
-
-        );
-
-
-        configuration.setAllowedHeaders(
-
-                List.of("*")
-
-        );
-
+        configuration.setAllowedHeaders(List.of("*"));
 
         configuration.setAllowCredentials(true);
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-        UrlBasedCorsConfigurationSource source =
-
-                new UrlBasedCorsConfigurationSource();
-
-
-        source.registerCorsConfiguration(
-
-                "/**",
-
-                configuration
-
-        );
-
+        source.registerCorsConfiguration("/**", configuration);
 
         return source;
-
-
     }
 
-
-    // ================================
-    // AUTHENTICATION MANAGER
-    // ================================
-
+// =========================================================
+// AUTHENTICATION MANAGER
+// =========================================================
 
     @Bean
-    public AuthenticationManager authenticationManager(
-
-            AuthenticationConfiguration configuration
-
-    ) throws Exception {
-
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
         return configuration.getAuthenticationManager();
-
-
     }
 
 
 }
-

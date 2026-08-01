@@ -1,0 +1,1617 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Quản lý danh mục - Gold Store</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: #f5f6f8;
+                color: #333;
+            }
+
+            /* =========================
+               HEADER
+            ========================= */
+
+            .header {
+                background: #222;
+                color: white;
+                padding: 16px 30px;
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                gap: 20px;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .admin-badge {
+                background: #d4af37;
+                color: #111;
+
+                padding: 7px 12px;
+                border-radius: 20px;
+
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            .logout-btn {
+                border: none;
+                background: #e53935;
+                color: white;
+
+                padding: 9px 15px;
+                border-radius: 6px;
+
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .logout-btn:hover {
+                background: #c62828;
+            }
+
+            /* =========================
+               CONTAINER
+            ========================= */
+
+            .container {
+                width: 95%;
+                max-width: 1200px;
+
+                margin: 30px auto;
+            }
+
+            .page-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                margin-bottom: 25px;
+                gap: 15px;
+            }
+
+            .page-header h2 {
+                margin: 0;
+                font-size: 28px;
+            }
+
+            .back-buttons {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .back-btn {
+                text-decoration: none;
+
+                background: #555;
+                color: white;
+
+                padding: 10px 16px;
+                border-radius: 7px;
+
+                font-weight: bold;
+            }
+
+            .back-btn:hover {
+                background: #333;
+            }
+
+            .gold-btn {
+                background: #b8860b;
+            }
+
+            .gold-btn:hover {
+                background: #9f7309;
+            }
+
+            /* =========================
+               MESSAGE
+            ========================= */
+
+            .message {
+                display: none;
+
+                padding: 14px 18px;
+                border-radius: 8px;
+
+                margin-bottom: 20px;
+
+                font-weight: 500;
+            }
+
+            .message.success {
+                display: block;
+
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .message.error {
+                display: block;
+
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            /* =========================
+               TOOLBAR
+            ========================= */
+
+            .toolbar {
+                background: white;
+
+                padding: 20px;
+
+                border-radius: 10px;
+
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+                margin-bottom: 20px;
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                gap: 15px;
+            }
+
+            .toolbar-title {
+                font-weight: bold;
+                font-size: 17px;
+            }
+
+            .btn {
+                border: none;
+
+                padding: 11px 17px;
+
+                border-radius: 7px;
+
+                cursor: pointer;
+
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                background: #b8860b;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #9f7309;
+            }
+
+            .btn-secondary {
+                background: #777;
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background: #555;
+            }
+
+            .btn-danger {
+                background: #e53935;
+                color: white;
+            }
+
+            .btn-danger:hover {
+                background: #c62828;
+            }
+
+            /* =========================
+               TABLE
+            ========================= */
+
+            .table-card {
+                background: white;
+
+                border-radius: 10px;
+
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+                overflow: hidden;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+
+                border-collapse: collapse;
+
+                min-width: 650px;
+            }
+
+            th {
+                background: #fafafa;
+
+                padding: 14px 15px;
+
+                text-align: left;
+
+                font-size: 14px;
+
+                border-bottom: 1px solid #eee;
+            }
+
+            td {
+                padding: 14px 15px;
+
+                border-bottom: 1px solid #eee;
+
+                vertical-align: middle;
+
+                font-size: 14px;
+            }
+
+            tr:hover {
+                background: #fafafa;
+            }
+
+            .id-column {
+                width: 100px;
+            }
+
+            .name-column {
+                width: auto;
+            }
+
+            .action-column {
+                width: 220px;
+            }
+
+            .actions {
+                display: flex;
+
+                gap: 7px;
+
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                border: none;
+
+                padding: 7px 11px;
+
+                border-radius: 5px;
+
+                cursor: pointer;
+
+                font-size: 12px;
+
+                font-weight: bold;
+            }
+
+            .view-btn {
+                background: #1976d2;
+                color: white;
+            }
+
+            .view-btn:hover {
+                background: #1565c0;
+            }
+
+            .edit-btn {
+                background: #b8860b;
+                color: white;
+            }
+
+            .edit-btn:hover {
+                background: #9f7309;
+            }
+
+            .delete-btn {
+                background: #e53935;
+                color: white;
+            }
+
+            .delete-btn:hover {
+                background: #c62828;
+            }
+
+            /* =========================
+               EMPTY / LOADING
+            ========================= */
+
+            .loading {
+                padding: 45px;
+
+                text-align: center;
+
+                color: #777;
+            }
+
+            .empty {
+                text-align: center;
+
+                padding: 45px;
+
+                color: #777;
+            }
+
+            /* =========================
+               PAGINATION
+            ========================= */
+
+            .pagination {
+                display: flex;
+
+                justify-content: center;
+                align-items: center;
+
+                gap: 12px;
+
+                padding: 20px;
+            }
+
+            .page-btn {
+                border: none;
+
+                background: #eee;
+
+                padding: 9px 14px;
+
+                border-radius: 6px;
+
+                cursor: pointer;
+
+                font-weight: bold;
+            }
+
+            .page-btn:hover:not(:disabled) {
+                background: #ddd;
+            }
+
+            .page-btn:disabled {
+                opacity: 0.5;
+
+                cursor: not-allowed;
+            }
+
+            .page-info {
+                font-weight: bold;
+            }
+
+            /* =========================
+               MODAL
+            ========================= */
+
+            .modal {
+                display: none;
+
+                position: fixed;
+
+                inset: 0;
+
+                background: rgba(0, 0, 0, 0.55);
+
+                z-index: 9999;
+
+                align-items: center;
+                justify-content: center;
+
+                padding: 20px;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background: white;
+
+                width: 100%;
+                max-width: 500px;
+
+                border-radius: 12px;
+
+                padding: 25px;
+
+                max-height: 90vh;
+
+                overflow-y: auto;
+            }
+
+            .modal-header {
+                display: flex;
+
+                justify-content: space-between;
+                align-items: center;
+
+                margin-bottom: 20px;
+            }
+
+            .modal-header h3 {
+                margin: 0;
+
+                font-size: 21px;
+            }
+
+            .close-btn {
+                border: none;
+
+                background: transparent;
+
+                font-size: 27px;
+
+                cursor: pointer;
+
+                color: #555;
+            }
+
+            .close-btn:hover {
+                color: #000;
+            }
+
+            /* =========================
+               FORM
+            ========================= */
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group label {
+                display: block;
+
+                margin-bottom: 7px;
+
+                font-weight: bold;
+
+                font-size: 14px;
+            }
+
+            .form-group input {
+                width: 100%;
+
+                padding: 12px 13px;
+
+                border: 1px solid #ddd;
+
+                border-radius: 7px;
+
+                outline: none;
+
+                font-size: 15px;
+            }
+
+            .form-group input:focus {
+                border-color: #b8860b;
+
+                box-shadow: 0 0 0 2px rgba(184, 134, 11, 0.1);
+            }
+
+            .form-error {
+                display: none;
+
+                color: #c62828;
+
+                font-size: 13px;
+
+                margin-top: 6px;
+            }
+
+            .modal-footer {
+                display: flex;
+
+                justify-content: flex-end;
+
+                gap: 10px;
+
+                margin-top: 22px;
+
+                padding-top: 18px;
+
+                border-top: 1px solid #eee;
+            }
+
+            /* =========================
+               DETAIL
+            ========================= */
+
+            .detail-box {
+                background: #f7f7f7;
+
+                border-radius: 8px;
+
+                padding: 16px;
+
+                margin-bottom: 15px;
+            }
+
+            .detail-label {
+                font-size: 12px;
+
+                color: #777;
+
+                margin-bottom: 6px;
+            }
+
+            .detail-value {
+                font-weight: bold;
+
+                font-size: 16px;
+
+                word-break: break-word;
+            }
+
+            /* =========================
+               RESPONSIVE
+            ========================= */
+
+            @media (max-width: 750px) {
+                .header {
+                    padding: 14px;
+                }
+
+                .header h1 {
+                    font-size: 18px;
+                }
+
+                .header-right {
+                    gap: 8px;
+                }
+
+                .admin-badge {
+                    display: none;
+                }
+
+                .container {
+                    width: 96%;
+                }
+
+                .page-header {
+                    flex-direction: column;
+
+                    align-items: flex-start;
+                }
+
+                .toolbar {
+                    flex-direction: column;
+
+                    align-items: stretch;
+                }
+
+                .back-buttons {
+                    width: 100%;
+                }
+
+                .back-btn {
+                    text-align: center;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- =========================================================
+             HEADER
+        ========================================================== -->
+
+        <header class="header">
+            <h1>Gold Store - Quản trị</h1>
+
+            <div class="header-right">
+                <span class="admin-badge">ADMIN</span>
+
+                <span id="adminUsername">---</span>
+
+                <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+            </div>
+        </header>
+
+        <!-- =========================================================
+             MAIN
+        ========================================================== -->
+
+        <main class="container">
+            <!-- PAGE HEADER -->
+
+            <div class="page-header">
+                <h2>Quản lý danh mục</h2>
+
+                <div class="back-buttons">
+                    <a href="users.html" class="back-btn">
+                        Quản lý người dùng
+                    </a>
+
+                    <a href="orders.html" class="back-btn">
+                        Quản lý đơn hàng
+                    </a>
+
+                    <a href="golds.html" class="back-btn gold-btn">
+                        Quản lý vàng
+                    </a>
+                </div>
+            </div>
+
+            <!-- MESSAGE -->
+
+            <div id="message" class="message"></div>
+
+            <!-- TOOLBAR -->
+
+            <div class="toolbar">
+                <div class="toolbar-title">Danh sách danh mục</div>
+
+                <button class="btn btn-primary" onclick="openCreateModal()">
+                    + Thêm danh mục
+                </button>
+            </div>
+
+            <!-- TABLE -->
+
+            <div class="table-card">
+                <div id="loading" class="loading">
+                    Đang tải danh sách danh mục...
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="categoriesTable" style="display: none">
+                        <thead>
+                            <tr>
+                                <th class="id-column">ID</th>
+
+                                <th class="name-column">Tên danh mục</th>
+
+                                <th class="action-column">Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="categoriesBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="empty" class="empty" style="display: none">
+                    Không có danh mục nào.
+                </div>
+
+                <!-- PAGINATION -->
+
+                <div id="pagination" class="pagination" style="display: none">
+                    <button
+                        id="previousButton"
+                        class="page-btn"
+                        onclick="previousPage()"
+                    >
+                        ← Trước
+                    </button>
+
+                    <span id="pageInfo" class="page-info"> Trang 1 </span>
+
+                    <button
+                        id="nextButton"
+                        class="page-btn"
+                        onclick="nextPage()"
+                    >
+                        Sau →
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- =========================================================
+             CREATE / UPDATE MODAL
+        ========================================================== -->
+
+        <div id="formModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="formModalTitle">Thêm danh mục</h3>
+
+                    <button class="close-btn" onclick="closeFormModal()">
+                        ×
+                    </button>
+                </div>
+
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label for="categoryName"> Tên danh mục </label>
+
+                        <input
+                            type="text"
+                            id="categoryName"
+                            maxlength="255"
+                            placeholder="Nhập tên danh mục..."
+                            autocomplete="off"
+                        />
+
+                        <div id="formError" class="form-error"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            onclick="closeFormModal()"
+                        >
+                            Hủy
+                        </button>
+
+                        <button
+                            type="submit"
+                            id="saveButton"
+                            class="btn btn-primary"
+                        >
+                            Lưu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- =========================================================
+             DETAIL MODAL
+        ========================================================== -->
+
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Chi tiết danh mục</h3>
+
+                    <button class="close-btn" onclick="closeDetailModal()">
+                        ×
+                    </button>
+                </div>
+
+                <div id="detailContent"></div>
+
+                <div class="modal-footer">
+                    <button
+                        class="btn btn-secondary"
+                        onclick="closeDetailModal()"
+                    >
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // =========================================================
+            // CONFIG
+            // =========================================================
+
+            const API_BASE_URL = "http://localhost:8080/api";
+
+            const PAGE_SIZE = 5;
+
+            let currentPage = 0;
+
+            let totalPages = 0;
+
+            let editingCategoryId = null;
+
+            // =========================================================
+            // DOM
+            // =========================================================
+
+            const loading = document.getElementById("loading");
+
+            const categoriesTable = document.getElementById("categoriesTable");
+
+            const categoriesBody = document.getElementById("categoriesBody");
+
+            const empty = document.getElementById("empty");
+
+            const pagination = document.getElementById("pagination");
+
+            const message = document.getElementById("message");
+
+            const formModal = document.getElementById("formModal");
+
+            const detailModal = document.getElementById("detailModal");
+
+            const categoryForm = document.getElementById("categoryForm");
+
+            const categoryName = document.getElementById("categoryName");
+
+            const formError = document.getElementById("formError");
+
+            const saveButton = document.getElementById("saveButton");
+
+            // =========================================================
+            // TOKEN
+            // =========================================================
+
+            function getToken() {
+                return (
+                    localStorage.getItem("token") ||
+                    localStorage.getItem("accessToken")
+                );
+            }
+
+            // =========================================================
+            // ROLE
+            // =========================================================
+
+            function getRole() {
+                return localStorage.getItem("role");
+            }
+
+            // =========================================================
+            // USERNAME
+            // =========================================================
+
+            function getUsername() {
+                return localStorage.getItem("username") || "---";
+            }
+
+            // =========================================================
+            // CHECK ADMIN
+            // =========================================================
+
+            function checkAdmin() {
+                const token = getToken();
+
+                const role = getRole();
+
+                if (!token) {
+                    alert("Bạn chưa đăng nhập. Vui lòng đăng nhập.");
+
+                    window.location.href = "../login.html";
+
+                    return false;
+                }
+
+                if (role !== "ADMIN") {
+                    alert(
+                        "Bạn không có quyền truy cập trang quản lý danh mục.",
+                    );
+
+                    window.location.href = "../customer/products.html";
+
+                    return false;
+                }
+
+                document.getElementById("adminUsername").textContent =
+                    getUsername();
+
+                return true;
+            }
+
+            // =========================================================
+            // MESSAGE
+            // =========================================================
+
+            function showMessage(text, type = "error") {
+                message.textContent = text;
+
+                message.className = "message " + type;
+
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth",
+                });
+            }
+
+            function hideMessage() {
+                message.textContent = "";
+
+                message.className = "message";
+            }
+
+            // =========================================================
+            // PARSE RESPONSE
+            // =========================================================
+
+            async function parseResponse(response) {
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    try {
+                        return await response.json();
+                    } catch (error) {
+                        return {};
+                    }
+                }
+
+                const text = await response.text();
+
+                return {
+                    message: text,
+                };
+            }
+
+            // =========================================================
+            // LOAD CATEGORIES
+            // =========================================================
+
+            async function loadCategories() {
+                hideMessage();
+
+                loading.style.display = "block";
+
+                categoriesTable.style.display = "none";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "none";
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Phiên đăng nhập không tồn tại.");
+
+                    loading.style.display = "none";
+
+                    return;
+                }
+
+                const params = new URLSearchParams();
+
+                params.append("page", currentPage);
+
+                params.append("size", PAGE_SIZE);
+
+                params.append("sort", "id,desc");
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/categories?${params.toString()}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Categories response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error(
+                                "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+                            );
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error(
+                                "Bạn không có quyền quản lý danh mục.",
+                            );
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể tải danh sách danh mục.",
+                        );
+                    }
+
+                    const categories = Array.isArray(data.content)
+                        ? data.content
+                        : [];
+
+                    totalPages = Number(data.totalPages) || 0;
+
+                    renderCategories(categories);
+
+                    updatePagination();
+                } catch (error) {
+                    console.error("Load categories error:", error);
+
+                    showMessage(error.message || "Có lỗi khi tải danh mục.");
+                } finally {
+                    loading.style.display = "none";
+                }
+            }
+
+            // =========================================================
+            // RENDER CATEGORIES
+            // =========================================================
+
+            function renderCategories(categories) {
+                categoriesBody.innerHTML = "";
+
+                if (!categories.length) {
+                    categoriesTable.style.display = "none";
+
+                    empty.style.display = "block";
+
+                    pagination.style.display = "none";
+
+                    return;
+                }
+
+                categoriesTable.style.display = "table";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "flex";
+
+                categories.forEach((category) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                            <td>
+                                <strong>
+                                    #${escapeHtml(category.id)}
+                                </strong>
+                            </td>
+
+                            <td>
+                                <strong>
+                                    ${escapeHtml(category.name || "---")}
+                                </strong>
+                            </td>
+
+                            <td>
+                                <div class="actions">
+
+                                    <button
+                                        class="action-btn view-btn"
+                                        onclick="viewCategory(${Number(category.id)})"
+                                    >
+                                        Xem
+                                    </button>
+
+                                    <button
+                                        class="action-btn edit-btn"
+                                        onclick="openEditModal(${Number(category.id)})"
+                                    >
+                                        Sửa
+                                    </button>
+
+                                    <button
+                                        class="action-btn delete-btn"
+                                        onclick="deleteCategory(${Number(category.id)})"
+                                    >
+                                        Xóa
+                                    </button>
+
+                                </div>
+                            </td>
+                        `;
+
+                    categoriesBody.appendChild(row);
+                });
+            }
+
+            // =========================================================
+            // ESCAPE HTML
+            // =========================================================
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            // =========================================================
+            // OPEN CREATE MODAL
+            // =========================================================
+
+            function openCreateModal() {
+                editingCategoryId = null;
+
+                document.getElementById("formModalTitle").textContent =
+                    "Thêm danh mục";
+
+                saveButton.textContent = "Thêm danh mục";
+
+                categoryName.value = "";
+
+                hideFormError();
+
+                formModal.classList.add("show");
+
+                setTimeout(() => {
+                    categoryName.focus();
+                }, 100);
+            }
+
+            // =========================================================
+            // OPEN EDIT MODAL
+            // =========================================================
+
+            async function openEditModal(id) {
+                hideMessage();
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Bạn chưa đăng nhập.");
+
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/categories/${id}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Category detail response:", data);
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể lấy thông tin danh mục.",
+                        );
+                    }
+
+                    editingCategoryId = id;
+
+                    document.getElementById("formModalTitle").textContent =
+                        "Sửa danh mục";
+
+                    saveButton.textContent = "Lưu thay đổi";
+
+                    categoryName.value = data.name || "";
+
+                    hideFormError();
+
+                    formModal.classList.add("show");
+
+                    setTimeout(() => {
+                        categoryName.focus();
+                    }, 100);
+                } catch (error) {
+                    console.error("Load category detail error:", error);
+
+                    showMessage(
+                        error.message || "Không thể lấy thông tin danh mục.",
+                    );
+                }
+            }
+
+            // =========================================================
+            // FORM SUBMIT
+            // =========================================================
+
+            categoryForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                hideMessage();
+
+                hideFormError();
+
+                const name = categoryName.value.trim();
+
+                if (!name) {
+                    showFormError("Tên danh mục không được để trống.");
+
+                    categoryName.focus();
+
+                    return;
+                }
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Bạn chưa đăng nhập.");
+
+                    return;
+                }
+
+                saveButton.disabled = true;
+
+                saveButton.textContent = editingCategoryId
+                    ? "Đang lưu..."
+                    : "Đang thêm...";
+
+                try {
+                    const isEdit = editingCategoryId !== null;
+
+                    const url = isEdit
+                        ? `${API_BASE_URL}/categories/${editingCategoryId}`
+                        : `${API_BASE_URL}/categories`;
+
+                    const method = isEdit ? "PUT" : "POST";
+
+                    const response = await fetch(url, {
+                        method: method,
+
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+
+                            "Content-Type": "application/json",
+
+                            Accept: "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            name: name,
+                        }),
+                    });
+
+                    const data = await parseResponse(response);
+
+                    console.log("Save category response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error(
+                                "Bạn không có quyền thực hiện thao tác này.",
+                            );
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Lưu danh mục thất bại.",
+                        );
+                    }
+
+                    closeFormModal();
+
+                    showMessage(
+                        isEdit
+                            ? "Cập nhật danh mục thành công!"
+                            : "Thêm danh mục thành công!",
+                        "success",
+                    );
+
+                    await loadCategories();
+                } catch (error) {
+                    console.error("Save category error:", error);
+
+                    showFormError(error.message || "Không thể lưu danh mục.");
+                } finally {
+                    saveButton.disabled = false;
+
+                    saveButton.textContent = editingCategoryId
+                        ? "Lưu thay đổi"
+                        : "Thêm danh mục";
+                }
+            });
+
+            // =========================================================
+            // VIEW CATEGORY
+            // =========================================================
+
+            async function viewCategory(id) {
+                hideMessage();
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Bạn chưa đăng nhập.");
+
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/categories/${id}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("View category response:", data);
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể xem danh mục.",
+                        );
+                    }
+
+                    document.getElementById("detailContent").innerHTML = `
+                        <div class="detail-box">
+                            <div class="detail-label">
+                                ID danh mục
+                            </div>
+
+                            <div class="detail-value">
+                                #${escapeHtml(data.id)}
+                            </div>
+                        </div>
+
+                        <div class="detail-box">
+                            <div class="detail-label">
+                                Tên danh mục
+                            </div>
+
+                            <div class="detail-value">
+                                ${escapeHtml(data.name || "---")}
+                            </div>
+                        </div>
+                    `;
+
+                    detailModal.classList.add("show");
+                } catch (error) {
+                    console.error("View category error:", error);
+
+                    showMessage(error.message || "Không thể xem danh mục.");
+                }
+            }
+
+            // =========================================================
+            // DELETE CATEGORY
+            // =========================================================
+
+            async function deleteCategory(id) {
+                const confirmed = confirm(
+                    `Bạn có chắc muốn xóa danh mục #${id}?\n\nLưu ý: nếu danh mục đang được sử dụng bởi sản phẩm vàng, backend có thể từ chối xóa.`,
+                );
+
+                if (!confirmed) {
+                    return;
+                }
+
+                const token = getToken();
+
+                if (!token) {
+                    showMessage("Bạn chưa đăng nhập.");
+
+                    return;
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/categories/${id}`,
+                        {
+                            method: "DELETE",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "*/*",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Delete category response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error("Bạn không có quyền xóa danh mục.");
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Xóa danh mục thất bại.",
+                        );
+                    }
+
+                    showMessage(
+                        data?.message || `Đã xóa danh mục #${id} thành công.`,
+                        "success",
+                    );
+
+                    /*
+                     * Nếu xóa phần tử cuối cùng
+                     * của trang hiện tại thì lùi
+                     * về trang trước.
+                     */
+
+                    if (
+                        categoriesBody.children.length === 1 &&
+                        currentPage > 0
+                    ) {
+                        currentPage--;
+                    }
+
+                    await loadCategories();
+                } catch (error) {
+                    console.error("Delete category error:", error);
+
+                    showMessage(error.message || "Xóa danh mục thất bại.");
+                }
+            }
+
+            // =========================================================
+            // FORM ERROR
+            // =========================================================
+
+            function showFormError(text) {
+                formError.textContent = text;
+
+                formError.style.display = "block";
+            }
+
+            function hideFormError() {
+                formError.textContent = "";
+
+                formError.style.display = "none";
+            }
+
+            // =========================================================
+            // CLOSE FORM MODAL
+            // =========================================================
+
+            function closeFormModal() {
+                formModal.classList.remove("show");
+
+                categoryForm.reset();
+
+                editingCategoryId = null;
+
+                hideFormError();
+
+                saveButton.disabled = false;
+
+                saveButton.textContent = "Lưu";
+            }
+
+            // =========================================================
+            // CLOSE DETAIL MODAL
+            // =========================================================
+
+            function closeDetailModal() {
+                detailModal.classList.remove("show");
+
+                document.getElementById("detailContent").innerHTML = "";
+            }
+
+            // =========================================================
+            // PAGINATION
+            // =========================================================
+
+            function updatePagination() {
+                const pageInfo = document.getElementById("pageInfo");
+
+                const previous = document.getElementById("previousButton");
+
+                const next = document.getElementById("nextButton");
+
+                if (totalPages === 0) {
+                    pageInfo.textContent = "Không có trang";
+                } else {
+                    pageInfo.textContent = `Trang ${currentPage + 1} / ${totalPages}`;
+                }
+
+                previous.disabled = currentPage <= 0;
+
+                next.disabled =
+                    totalPages === 0 || currentPage >= totalPages - 1;
+            }
+
+            // =========================================================
+            // PREVIOUS PAGE
+            // =========================================================
+
+            function previousPage() {
+                if (currentPage <= 0) {
+                    return;
+                }
+
+                currentPage--;
+
+                loadCategories();
+            }
+
+            // =========================================================
+            // NEXT PAGE
+            // =========================================================
+
+            function nextPage() {
+                if (currentPage >= totalPages - 1) {
+                    return;
+                }
+
+                currentPage++;
+
+                loadCategories();
+            }
+
+            // =========================================================
+            // CLICK OUTSIDE FORM MODAL
+            // =========================================================
+
+            formModal.addEventListener("click", function (event) {
+                if (event.target === formModal) {
+                    closeFormModal();
+                }
+            });
+
+            // =========================================================
+            // CLICK OUTSIDE DETAIL MODAL
+            // =========================================================
+
+            detailModal.addEventListener("click", function (event) {
+                if (event.target === detailModal) {
+                    closeDetailModal();
+                }
+            });
+
+            // =========================================================
+            // ESC KEY
+            // =========================================================
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeFormModal();
+
+                    closeDetailModal();
+                }
+            });
+
+            // =========================================================
+            // LOGOUT
+            // =========================================================
+
+            function logout() {
+                localStorage.removeItem("token");
+
+                localStorage.removeItem("accessToken");
+
+                localStorage.removeItem("userId");
+
+                localStorage.removeItem("username");
+
+                localStorage.removeItem("role");
+
+                window.location.href = "../login.html";
+            }
+
+            // =========================================================
+            // START
+            // =========================================================
+
+            if (checkAdmin()) {
+                loadCategories();
+            }
+        </script>
+    </body>
+</html>

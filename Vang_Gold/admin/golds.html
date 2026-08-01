@@ -1,0 +1,2045 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Quản lý vàng - Gold Store</title>
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: #f5f6f8;
+                color: #333;
+            }
+
+            /* =====================================================
+           HEADER
+        ===================================================== */
+
+            .header {
+                background: #222;
+                color: white;
+                padding: 16px 30px;
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                gap: 20px;
+            }
+
+            .header h1 {
+                margin: 0;
+                font-size: 22px;
+            }
+
+            .header-right {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .admin-badge {
+                background: #d4af37;
+                color: #111;
+
+                padding: 7px 12px;
+                border-radius: 20px;
+
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            .logout-btn {
+                border: none;
+                background: #e53935;
+                color: white;
+
+                padding: 9px 15px;
+                border-radius: 6px;
+
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .logout-btn:hover {
+                background: #c62828;
+            }
+
+            /* =====================================================
+           CONTAINER
+        ===================================================== */
+
+            .container {
+                width: 95%;
+                max-width: 1400px;
+
+                margin: 30px auto;
+            }
+
+            .page-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                margin-bottom: 25px;
+
+                gap: 15px;
+            }
+
+            .page-header h2 {
+                margin: 0;
+                font-size: 28px;
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            /* =====================================================
+           BUTTON
+        ===================================================== */
+
+            .btn {
+                border: none;
+                padding: 11px 17px;
+
+                border-radius: 7px;
+
+                cursor: pointer;
+
+                font-weight: bold;
+                font-size: 14px;
+            }
+
+            .btn-primary {
+                background: #b8860b;
+                color: white;
+            }
+
+            .btn-primary:hover {
+                background: #9f7309;
+            }
+
+            .btn-secondary {
+                background: #555;
+                color: white;
+            }
+
+            .btn-secondary:hover {
+                background: #333;
+            }
+
+            .btn-danger {
+                background: #e53935;
+                color: white;
+            }
+
+            .btn-danger:hover {
+                background: #c62828;
+            }
+
+            .btn:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+            /* =====================================================
+           MESSAGE
+        ===================================================== */
+
+            .message {
+                display: none;
+
+                padding: 14px 18px;
+
+                border-radius: 8px;
+
+                margin-bottom: 20px;
+
+                font-weight: 500;
+            }
+
+            .message.success {
+                display: block;
+
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            .message.error {
+                display: block;
+
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            /* =====================================================
+           FILTER
+        ===================================================== */
+
+            .filter-card {
+                background: white;
+
+                padding: 20px;
+
+                border-radius: 10px;
+
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+                margin-bottom: 20px;
+            }
+
+            .filter-grid {
+                display: grid;
+
+                grid-template-columns: 1fr 220px auto auto;
+
+                gap: 12px;
+            }
+
+            .filter-grid input {
+                width: 100%;
+
+                padding: 11px 12px;
+
+                border: 1px solid #ddd;
+
+                border-radius: 7px;
+
+                font-size: 14px;
+
+                outline: none;
+            }
+
+            .filter-grid input:focus {
+                border-color: #b8860b;
+            }
+
+            /* =====================================================
+           TABLE
+        ===================================================== */
+
+            .table-card {
+                background: white;
+
+                border-radius: 10px;
+
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+                overflow: hidden;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+
+                border-collapse: collapse;
+
+                min-width: 1100px;
+            }
+
+            th {
+                background: #fafafa;
+
+                padding: 14px 12px;
+
+                text-align: left;
+
+                font-size: 14px;
+
+                border-bottom: 1px solid #eee;
+            }
+
+            td {
+                padding: 14px 12px;
+
+                border-bottom: 1px solid #eee;
+
+                vertical-align: middle;
+
+                font-size: 14px;
+            }
+
+            tr:hover {
+                background: #fafafa;
+            }
+
+            /* =====================================================
+           IMAGE
+        ===================================================== */
+
+            .gold-image {
+                width: 75px;
+                height: 75px;
+
+                object-fit: cover;
+
+                border-radius: 8px;
+
+                border: 1px solid #ddd;
+
+                background: #f1f1f1;
+            }
+
+            .no-image {
+                width: 75px;
+                height: 75px;
+
+                display: flex;
+
+                align-items: center;
+                justify-content: center;
+
+                background: #eee;
+
+                color: #888;
+
+                border-radius: 8px;
+
+                font-size: 12px;
+
+                text-align: center;
+            }
+
+            /* =====================================================
+           ACTIONS
+        ===================================================== */
+
+            .actions {
+                display: flex;
+
+                gap: 7px;
+
+                flex-wrap: wrap;
+            }
+
+            .action-btn {
+                border: none;
+
+                padding: 7px 10px;
+
+                border-radius: 5px;
+
+                cursor: pointer;
+
+                font-size: 12px;
+
+                font-weight: bold;
+            }
+
+            .view-btn {
+                background: #1976d2;
+                color: white;
+            }
+
+            .edit-btn {
+                background: #b8860b;
+                color: white;
+            }
+
+            .delete-btn {
+                background: #e53935;
+                color: white;
+            }
+
+            /* =====================================================
+           PAGINATION
+        ===================================================== */
+
+            .pagination {
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                gap: 12px;
+
+                padding: 20px;
+            }
+
+            .page-btn {
+                border: none;
+
+                background: #eee;
+
+                padding: 9px 14px;
+
+                border-radius: 6px;
+
+                cursor: pointer;
+
+                font-weight: bold;
+            }
+
+            .page-btn:hover:not(:disabled) {
+                background: #ddd;
+            }
+
+            .page-btn:disabled {
+                opacity: 0.5;
+
+                cursor: not-allowed;
+            }
+
+            .page-info {
+                font-weight: bold;
+            }
+
+            /* =====================================================
+           EMPTY / LOADING
+        ===================================================== */
+
+            .empty {
+                text-align: center;
+
+                padding: 45px;
+
+                color: #777;
+            }
+
+            .loading {
+                padding: 45px;
+
+                text-align: center;
+
+                color: #777;
+            }
+
+            /* =====================================================
+           MODAL
+        ===================================================== */
+
+            .modal {
+                display: none;
+
+                position: fixed;
+
+                inset: 0;
+
+                background: rgba(0, 0, 0, 0.55);
+
+                z-index: 9999;
+
+                align-items: center;
+
+                justify-content: center;
+
+                padding: 20px;
+            }
+
+            .modal.show {
+                display: flex;
+            }
+
+            .modal-content {
+                background: white;
+
+                width: 100%;
+
+                max-width: 650px;
+
+                max-height: 90vh;
+
+                overflow-y: auto;
+
+                border-radius: 12px;
+
+                padding: 25px;
+            }
+
+            .modal-header {
+                display: flex;
+
+                justify-content: space-between;
+
+                align-items: center;
+
+                margin-bottom: 20px;
+            }
+
+            .modal-header h3 {
+                margin: 0;
+
+                font-size: 22px;
+            }
+
+            .close-btn {
+                border: none;
+
+                background: transparent;
+
+                font-size: 28px;
+
+                cursor: pointer;
+
+                color: #555;
+            }
+
+            /* =====================================================
+           FORM
+        ===================================================== */
+
+            .form-group {
+                margin-bottom: 17px;
+            }
+
+            .form-group label {
+                display: block;
+
+                margin-bottom: 7px;
+
+                font-weight: bold;
+
+                font-size: 14px;
+            }
+
+            .form-group input,
+            .form-group select {
+                width: 100%;
+
+                padding: 11px 12px;
+
+                border: 1px solid #ddd;
+
+                border-radius: 7px;
+
+                font-size: 14px;
+
+                outline: none;
+            }
+
+            .form-group input:focus,
+            .form-group select:focus {
+                border-color: #b8860b;
+            }
+
+            .form-group small {
+                display: block;
+
+                margin-top: 5px;
+
+                color: #777;
+
+                font-size: 12px;
+            }
+
+            .current-image {
+                margin-top: 10px;
+            }
+
+            .current-image img {
+                width: 130px;
+                height: 130px;
+
+                object-fit: cover;
+
+                border-radius: 8px;
+
+                border: 1px solid #ddd;
+            }
+
+            .modal-footer {
+                display: flex;
+
+                justify-content: flex-end;
+
+                gap: 10px;
+
+                margin-top: 25px;
+
+                padding-top: 20px;
+
+                border-top: 1px solid #eee;
+            }
+
+            /* =====================================================
+           DETAIL
+        ===================================================== */
+
+            .detail-grid {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 12px;
+
+                margin-bottom: 20px;
+            }
+
+            .detail-box {
+                background: #f7f7f7;
+
+                padding: 13px;
+
+                border-radius: 7px;
+            }
+
+            .detail-label {
+                color: #777;
+
+                font-size: 12px;
+
+                margin-bottom: 5px;
+            }
+
+            .detail-value {
+                font-weight: bold;
+
+                word-break: break-word;
+            }
+
+            .detail-image {
+                width: 220px;
+                height: 220px;
+
+                object-fit: cover;
+
+                border-radius: 10px;
+
+                border: 1px solid #ddd;
+
+                display: block;
+
+                margin: 0 auto 20px;
+            }
+
+            /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+            @media (max-width: 850px) {
+                .filter-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .page-header {
+                    flex-direction: column;
+
+                    align-items: flex-start;
+                }
+
+                .detail-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .header {
+                    padding: 14px;
+                }
+
+                .header h1 {
+                    font-size: 18px;
+                }
+
+                .container {
+                    width: 96%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <header class="header">
+            <h1>Gold Store - Quản trị</h1>
+
+            <div class="header-right">
+                <span class="admin-badge"> ADMIN </span>
+
+                <span id="adminUsername"> --- </span>
+
+                <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+            </div>
+        </header>
+
+        <main class="container">
+            <div class="page-header">
+                <h2>Quản lý vàng</h2>
+
+                <div class="header-actions">
+                    <a
+                        href="users.html"
+                        class="btn btn-secondary"
+                        style="text-decoration: none"
+                    >
+                        Quản lý người dùng
+                    </a>
+
+                    <a
+                        href="orders.html"
+                        class="btn btn-secondary"
+                        style="text-decoration: none"
+                    >
+                        Quản lý đơn hàng
+                    </a>
+
+                    <button class="btn btn-primary" onclick="openCreateModal()">
+                        + Thêm vàng
+                    </button>
+                </div>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
+            <div class="filter-card">
+                <div class="filter-grid">
+                    <input
+                        type="text"
+                        id="nameSearch"
+                        placeholder="Tìm theo tên vàng..."
+                    />
+
+                    <input
+                        type="text"
+                        id="typeSearch"
+                        placeholder="Loại vàng..."
+                    />
+
+                    <button class="btn btn-primary" onclick="searchGolds()">
+                        Tìm kiếm
+                    </button>
+
+                    <button class="btn btn-secondary" onclick="resetSearch()">
+                        Làm mới
+                    </button>
+                </div>
+            </div>
+
+            <!-- =====================================================
+         TABLE
+    ====================================================== -->
+
+            <div class="table-card">
+                <div id="loading" class="loading">
+                    Đang tải danh sách vàng...
+                </div>
+
+                <div class="table-wrapper">
+                    <table id="goldTable" style="display: none">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+
+                                <th>Ảnh</th>
+
+                                <th>Tên vàng</th>
+
+                                <th>Loại</th>
+
+                                <th>Khối lượng</th>
+
+                                <th>Giá</th>
+
+                                <th>Số lượng</th>
+
+                                <th>Category</th>
+
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="goldBody"></tbody>
+                    </table>
+                </div>
+
+                <div id="empty" class="empty" style="display: none">
+                    Không tìm thấy sản phẩm vàng.
+                </div>
+
+                <div id="pagination" class="pagination" style="display: none">
+                    <button
+                        id="previousButton"
+                        class="page-btn"
+                        onclick="previousPage()"
+                    >
+                        ← Trước
+                    </button>
+
+                    <span id="pageInfo" class="page-info"> Trang 1 </span>
+
+                    <button
+                        id="nextButton"
+                        class="page-btn"
+                        onclick="nextPage()"
+                    >
+                        Sau →
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <!-- =========================================================
+     CREATE / UPDATE MODAL
+========================================================= -->
+
+        <div id="formModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="formTitle">Thêm vàng</h3>
+
+                    <button class="close-btn" onclick="closeFormModal()">
+                        ×
+                    </button>
+                </div>
+
+                <form id="goldForm">
+                    <input type="hidden" id="goldId" />
+
+                    <div class="form-group">
+                        <label> Tên vàng </label>
+
+                        <input type="text" id="goldName" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label> Loại vàng </label>
+
+                        <input type="text" id="goldType" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label> Khối lượng </label>
+
+                        <input
+                            type="number"
+                            id="goldWeight"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        />
+
+                        <small> Ví dụ: 1.5 </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Giá </label>
+
+                        <input
+                            type="number"
+                            id="goldPrice"
+                            min="0.01"
+                            step="0.01"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label> Số lượng </label>
+
+                        <input
+                            type="number"
+                            id="goldQuantity"
+                            min="0"
+                            step="1"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label> Category ID </label>
+
+                        <input
+                            type="number"
+                            id="categoryId"
+                            min="1"
+                            step="1"
+                            required
+                        />
+
+                        <small>
+                            Nhập ID category đang có trong database.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label> Ảnh </label>
+
+                        <input type="file" id="goldImage" accept="image/*" />
+
+                        <small id="imageNote">
+                            Khi thêm mới, bắt buộc phải chọn ảnh.
+                        </small>
+
+                        <div
+                            id="currentImage"
+                            class="current-image"
+                            style="display: none"
+                        ></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            onclick="closeFormModal()"
+                        >
+                            Hủy
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveButton"
+                        >
+                            Lưu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- =========================================================
+     DETAIL MODAL
+========================================================= -->
+
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Chi tiết vàng</h3>
+
+                    <button class="close-btn" onclick="closeDetailModal()">
+                        ×
+                    </button>
+                </div>
+
+                <div id="detailContent"></div>
+            </div>
+        </div>
+
+        <script>
+            // =========================================================
+            // CONFIG
+            // =========================================================
+
+            const API_BASE_URL = "http://localhost:8080/api";
+
+            const PAGE_SIZE = 5;
+
+            let currentPage = 0;
+
+            let totalPages = 0;
+
+            // =========================================================
+            // DOM
+            // =========================================================
+
+            const loading = document.getElementById("loading");
+
+            const goldTable = document.getElementById("goldTable");
+
+            const goldBody = document.getElementById("goldBody");
+
+            const empty = document.getElementById("empty");
+
+            const pagination = document.getElementById("pagination");
+
+            const message = document.getElementById("message");
+
+            // =========================================================
+            // TOKEN
+            // =========================================================
+
+            function getToken() {
+                return (
+                    localStorage.getItem("token") ||
+                    localStorage.getItem("accessToken")
+                );
+            }
+
+            // =========================================================
+            // ROLE
+            // =========================================================
+
+            function getRole() {
+                return localStorage.getItem("role");
+            }
+
+            // =========================================================
+            // USERNAME
+            // =========================================================
+
+            function getUsername() {
+                return localStorage.getItem("username") || "---";
+            }
+
+            // =========================================================
+            // CHECK ADMIN
+            // =========================================================
+
+            function checkAdmin() {
+                const token = getToken();
+
+                const role = getRole();
+
+                if (!token) {
+                    alert("Bạn chưa đăng nhập.");
+
+                    window.location.href = "../login.html";
+
+                    return false;
+                }
+
+                if (role !== "ADMIN") {
+                    alert("Bạn không có quyền truy cập trang quản lý.");
+
+                    window.location.href = "../customer/products.html";
+
+                    return false;
+                }
+
+                document.getElementById("adminUsername").textContent =
+                    getUsername();
+
+                return true;
+            }
+
+            // =========================================================
+            // MESSAGE
+            // =========================================================
+
+            function showMessage(text, type = "error") {
+                message.textContent = text;
+
+                message.className = "message " + type;
+            }
+
+            function hideMessage() {
+                message.textContent = "";
+
+                message.className = "message";
+            }
+
+            // =========================================================
+            // RESPONSE PARSER
+            // =========================================================
+
+            async function parseResponse(response) {
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.includes("application/json")) {
+                    return await response.json();
+                }
+
+                const text = await response.text();
+
+                return {
+                    message: text,
+                };
+            }
+
+            // =========================================================
+            // LOAD GOLDS
+            // =========================================================
+
+            async function loadGolds() {
+                hideMessage();
+
+                loading.style.display = "block";
+
+                goldTable.style.display = "none";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "none";
+
+                const token = getToken();
+
+                const name = document.getElementById("nameSearch").value.trim();
+
+                const type = document.getElementById("typeSearch").value.trim();
+
+                const params = new URLSearchParams();
+
+                params.append("page", currentPage);
+
+                params.append("size", PAGE_SIZE);
+
+                params.append("sort", "id,desc");
+
+                if (name) {
+                    params.append("name", name);
+                }
+
+                if (type) {
+                    params.append("type", type);
+                }
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/golds?${params.toString()}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Golds response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error("Phiên đăng nhập đã hết hạn.");
+                        }
+
+                        if (response.status === 403) {
+                            throw new Error("Bạn không có quyền quản lý vàng.");
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể tải danh sách vàng.",
+                        );
+                    }
+
+                    const golds = data.content || [];
+
+                    totalPages = data.totalPages || 0;
+
+                    renderGolds(golds);
+
+                    updatePagination();
+                } catch (error) {
+                    console.error("Load golds error:", error);
+
+                    showMessage(
+                        error.message || "Có lỗi khi tải danh sách vàng.",
+                    );
+                } finally {
+                    loading.style.display = "none";
+                }
+            }
+
+            // =========================================================
+            // IMAGE URL
+            // =========================================================
+
+            function getImageUrl(image) {
+                if (!image) {
+                    return null;
+                }
+
+                image = String(image).trim();
+
+                if (!image) {
+                    return null;
+                }
+
+                // Backend đã trả URL đầy đủ
+                if (
+                    image.startsWith("http://") ||
+                    image.startsWith("https://")
+                ) {
+                    return image;
+                }
+
+                // Nếu backend trả /uploads/...
+                if (image.startsWith("/")) {
+                    return "http://localhost:8080" + image;
+                }
+
+                // Nếu backend trả uploads/...
+                if (image.startsWith("uploads/")) {
+                    return "http://localhost:8080/" + image;
+                }
+
+                // Nếu backend chỉ trả tên file
+                return "http://localhost:8080/uploads/" + image;
+            }
+
+            // =========================================================
+            // RENDER IMAGE
+            // =========================================================
+
+            function renderImage(image, className = "gold-image") {
+                const imageUrl = getImageUrl(image);
+
+                if (!imageUrl) {
+                    return `
+                <div class="no-image">
+                    Không có ảnh
+                </div>
+            `;
+                }
+
+                return `
+            <img
+                class="${className}"
+                src="${escapeHtml(imageUrl)}"
+                alt="Gold"
+                onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';"
+            >
+
+            <div
+                class="no-image"
+                style="display:none">
+                Ảnh lỗi
+            </div>
+        `;
+            }
+
+            // =========================================================
+            // RENDER GOLDS
+            // =========================================================
+
+            function renderGolds(golds) {
+                goldBody.innerHTML = "";
+
+                if (!golds.length) {
+                    goldTable.style.display = "none";
+
+                    empty.style.display = "block";
+
+                    pagination.style.display = "none";
+
+                    return;
+                }
+
+                goldTable.style.display = "table";
+
+                empty.style.display = "none";
+
+                pagination.style.display = "flex";
+
+                golds.forEach((gold) => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+
+                    <td>
+                        <strong>
+                            #${gold.id}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        ${renderImage(gold.image || gold.goldImage)}
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            ${escapeHtml(gold.name || "---")}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        ${escapeHtml(gold.type || "---")}
+                    </td>
+
+
+                    <td>
+                        ${gold.weight ?? 0}
+                    </td>
+
+
+                    <td>
+                        <strong>
+                            ${formatMoney(gold.price)}
+                        </strong>
+                    </td>
+
+
+                    <td>
+                        ${gold.quantity ?? 0}
+                    </td>
+
+
+                    <td>
+                        ${gold.categoryId ?? gold.category?.id ?? "---"}
+                    </td>
+
+
+                    <td>
+
+                        <div class="actions">
+
+                            <button
+                                class="action-btn view-btn"
+                                onclick="viewGold(${gold.id})">
+
+                                Xem
+
+                            </button>
+
+
+                            <button
+                                class="action-btn edit-btn"
+                                onclick="openEditModal(${gold.id})">
+
+                                Sửa
+
+                            </button>
+
+
+                            <button
+                                class="action-btn delete-btn"
+                                onclick="deleteGold(${gold.id})">
+
+                                Xóa
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                `;
+
+                    goldBody.appendChild(row);
+                });
+            }
+
+            // =========================================================
+            // FORMAT MONEY
+            // =========================================================
+
+            function formatMoney(value) {
+                if (value === null || value === undefined) {
+                    return "0 ₫";
+                }
+
+                const number = Number(value);
+
+                if (Number.isNaN(number)) {
+                    return "0 ₫";
+                }
+
+                return number.toLocaleString("vi-VN") + " ₫";
+            }
+
+            // =========================================================
+            // ESCAPE HTML
+            // =========================================================
+
+            function escapeHtml(value) {
+                return String(value)
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;")
+                    .replaceAll('"', "&quot;")
+                    .replaceAll("'", "&#039;");
+            }
+
+            // =========================================================
+            // OPEN CREATE
+            // =========================================================
+
+            function openCreateModal() {
+                hideMessage();
+
+                document.getElementById("goldForm").reset();
+
+                document.getElementById("goldId").value = "";
+
+                document.getElementById("formTitle").textContent = "Thêm vàng";
+
+                document.getElementById("imageNote").textContent =
+                    "Khi thêm mới, bắt buộc phải chọn ảnh.";
+
+                document.getElementById("currentImage").style.display = "none";
+
+                document.getElementById("formModal").classList.add("show");
+            }
+
+            // =========================================================
+            // OPEN EDIT
+            // =========================================================
+
+            async function openEditModal(id) {
+                hideMessage();
+
+                const token = getToken();
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/golds/${id}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Gold detail:", data);
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể tải thông tin vàng.",
+                        );
+                    }
+
+                    document.getElementById("goldId").value = data.id;
+
+                    document.getElementById("goldName").value = data.name || "";
+
+                    document.getElementById("goldType").value = data.type || "";
+
+                    document.getElementById("goldWeight").value =
+                        data.weight ?? "";
+
+                    document.getElementById("goldPrice").value =
+                        data.price ?? "";
+
+                    document.getElementById("goldQuantity").value =
+                        data.quantity ?? "";
+
+                    document.getElementById("categoryId").value =
+                        data.categoryId ?? data.category?.id ?? "";
+
+                    document.getElementById("goldImage").value = "";
+
+                    document.getElementById("formTitle").textContent =
+                        "Sửa thông tin vàng";
+
+                    document.getElementById("imageNote").textContent =
+                        "Có thể bỏ trống nếu không muốn thay ảnh.";
+
+                    const image = data.image || data.goldImage;
+
+                    const currentImage =
+                        document.getElementById("currentImage");
+
+                    const imageUrl = getImageUrl(image);
+
+                    if (imageUrl) {
+                        currentImage.innerHTML = `
+
+                    <div
+                        style="
+                            margin-bottom:7px;
+                            font-weight:bold;
+                        ">
+
+                        Ảnh hiện tại
+
+                    </div>
+
+
+                    <img
+                        src="${escapeHtml(imageUrl)}"
+                        alt="Ảnh vàng"
+                        onerror="
+                            this.style.display='none';
+                            this.nextElementSibling.style.display='block';
+                        "
+                    >
+
+                    <div
+                        style="
+                            display:none;
+                            color:#c62828;
+                            font-size:13px;
+                        ">
+
+                        Không tải được ảnh.
+
+                    </div>
+
+                `;
+
+                        currentImage.style.display = "block";
+                    } else {
+                        currentImage.innerHTML = "";
+
+                        currentImage.style.display = "none";
+                    }
+
+                    document.getElementById("formModal").classList.add("show");
+                } catch (error) {
+                    console.error("Load gold error:", error);
+
+                    showMessage(
+                        error.message || "Không thể tải thông tin vàng.",
+                    );
+                }
+            }
+
+            // =========================================================
+            // SUBMIT FORM
+            // =========================================================
+
+            document
+                .getElementById("goldForm")
+                .addEventListener("submit", async function (event) {
+                    event.preventDefault();
+
+                    const token = getToken();
+
+                    const id = document.getElementById("goldId").value;
+
+                    const name = document
+                        .getElementById("goldName")
+                        .value.trim();
+
+                    const type = document
+                        .getElementById("goldType")
+                        .value.trim();
+
+                    const weight = document.getElementById("goldWeight").value;
+
+                    const price = document.getElementById("goldPrice").value;
+
+                    const quantity =
+                        document.getElementById("goldQuantity").value;
+
+                    const categoryId =
+                        document.getElementById("categoryId").value;
+
+                    const imageFile =
+                        document.getElementById("goldImage").files[0];
+
+                    // =================================================
+                    // VALIDATION
+                    // =================================================
+
+                    if (!name) {
+                        alert("Tên vàng không được để trống.");
+
+                        return;
+                    }
+
+                    if (!type) {
+                        alert("Loại vàng không được để trống.");
+
+                        return;
+                    }
+
+                    if (!weight || Number(weight) <= 0) {
+                        alert("Khối lượng phải lớn hơn 0.");
+
+                        return;
+                    }
+
+                    if (!price || Number(price) <= 0) {
+                        alert("Giá phải lớn hơn 0.");
+
+                        return;
+                    }
+
+                    if (quantity === "" || Number(quantity) < 0) {
+                        alert("Số lượng không hợp lệ.");
+
+                        return;
+                    }
+
+                    if (!categoryId || Number(categoryId) <= 0) {
+                        alert("Category ID không hợp lệ.");
+
+                        return;
+                    }
+
+                    // CREATE bắt buộc ảnh
+                    if (!id && !imageFile) {
+                        alert("Vui lòng chọn ảnh.");
+
+                        return;
+                    }
+
+                    const formData = new FormData();
+
+                    formData.append("name", name);
+
+                    formData.append("type", type);
+
+                    formData.append("weight", weight);
+
+                    formData.append("price", price);
+
+                    formData.append("quantity", quantity);
+
+                    formData.append("categoryId", categoryId);
+
+                    if (imageFile) {
+                        formData.append("image", imageFile);
+                    }
+
+                    const button = document.getElementById("saveButton");
+
+                    button.disabled = true;
+
+                    button.textContent = "Đang lưu...";
+
+                    try {
+                        const url = id
+                            ? `${API_BASE_URL}/golds/${id}`
+                            : `${API_BASE_URL}/golds`;
+
+                        const method = id ? "PUT" : "POST";
+
+                        const response = await fetch(url, {
+                            method: method,
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+
+                            body: formData,
+                        });
+
+                        const data = await parseResponse(response);
+
+                        console.log("Save gold response:", data);
+
+                        if (!response.ok) {
+                            if (response.status === 401) {
+                                throw new Error("Phiên đăng nhập đã hết hạn.");
+                            }
+
+                            if (response.status === 403) {
+                                throw new Error(
+                                    "Bạn không có quyền thêm hoặc sửa vàng.",
+                                );
+                            }
+
+                            throw new Error(
+                                data?.message ||
+                                    data?.error ||
+                                    "Lưu vàng thất bại.",
+                            );
+                        }
+
+                        closeFormModal();
+
+                        showMessage(
+                            id
+                                ? "Cập nhật vàng thành công!"
+                                : "Thêm vàng thành công!",
+                            "success",
+                        );
+
+                        await loadGolds();
+                    } catch (error) {
+                        console.error("Save gold error:", error);
+
+                        alert(error.message || "Lưu vàng thất bại.");
+                    } finally {
+                        button.disabled = false;
+
+                        button.textContent = "Lưu";
+                    }
+                });
+
+            // =========================================================
+            // VIEW GOLD
+            // =========================================================
+
+            async function viewGold(id) {
+                const token = getToken();
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/golds/${id}`,
+                        {
+                            method: "GET",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "application/json",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    if (!response.ok) {
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Không thể xem vàng.",
+                        );
+                    }
+
+                    const image = data.image || data.goldImage;
+
+                    const imageUrl = getImageUrl(image);
+
+                    document.getElementById("detailContent").innerHTML = `
+
+                ${
+                    imageUrl
+                        ? `
+                            <img
+                                class="detail-image"
+                                src="${escapeHtml(imageUrl)}"
+                                alt="Ảnh vàng"
+                                onerror="
+                                    this.style.display='none';
+                                "
+                            >
+                        `
+                        : `
+                            <div
+                                class="no-image"
+                                style="
+                                    margin:0 auto 20px;
+                                    width:220px;
+                                    height:220px;
+                                ">
+
+                                Không có ảnh
+
+                            </div>
+                        `
+                }
+
+
+                <div class="detail-grid">
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            ID
+                        </div>
+
+                        <div class="detail-value">
+                            #${data.id}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Tên vàng
+                        </div>
+
+                        <div class="detail-value">
+                            ${escapeHtml(data.name || "---")}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Loại vàng
+                        </div>
+
+                        <div class="detail-value">
+                            ${escapeHtml(data.type || "---")}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Khối lượng
+                        </div>
+
+                        <div class="detail-value">
+                            ${data.weight ?? "---"}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Giá
+                        </div>
+
+                        <div class="detail-value">
+                            ${formatMoney(data.price)}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Số lượng
+                        </div>
+
+                        <div class="detail-value">
+                            ${data.quantity ?? 0}
+                        </div>
+
+                    </div>
+
+
+                    <div class="detail-box">
+
+                        <div class="detail-label">
+                            Category ID
+                        </div>
+
+                        <div class="detail-value">
+                            ${data.categoryId ?? data.category?.id ?? "---"}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            `;
+
+                    document
+                        .getElementById("detailModal")
+                        .classList.add("show");
+                } catch (error) {
+                    console.error("View gold error:", error);
+
+                    showMessage(
+                        error.message || "Không thể xem thông tin vàng.",
+                    );
+                }
+            }
+
+            // =========================================================
+            // DELETE GOLD
+            // =========================================================
+
+            async function deleteGold(id) {
+                const confirmed = confirm(`Bạn có chắc muốn xóa vàng #${id}?`);
+
+                if (!confirmed) {
+                    return;
+                }
+
+                const token = getToken();
+
+                try {
+                    const response = await fetch(
+                        `${API_BASE_URL}/golds/${id}`,
+                        {
+                            method: "DELETE",
+
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+
+                                Accept: "*/*",
+                            },
+                        },
+                    );
+
+                    const data = await parseResponse(response);
+
+                    console.log("Delete gold response:", data);
+
+                    if (!response.ok) {
+                        if (response.status === 403) {
+                            throw new Error("Bạn không có quyền xóa vàng.");
+                        }
+
+                        throw new Error(
+                            data?.message ||
+                                data?.error ||
+                                "Xóa vàng thất bại.",
+                        );
+                    }
+
+                    showMessage(
+                        data?.message || `Đã xóa vàng #${id} thành công.`,
+                        "success",
+                    );
+
+                    await loadGolds();
+                } catch (error) {
+                    console.error("Delete gold error:", error);
+
+                    showMessage(error.message || "Xóa vàng thất bại.");
+                }
+            }
+
+            // =========================================================
+            // SEARCH
+            // =========================================================
+
+            function searchGolds() {
+                currentPage = 0;
+
+                loadGolds();
+            }
+
+            // =========================================================
+            // RESET
+            // =========================================================
+
+            function resetSearch() {
+                document.getElementById("nameSearch").value = "";
+
+                document.getElementById("typeSearch").value = "";
+
+                currentPage = 0;
+
+                loadGolds();
+            }
+
+            // =========================================================
+            // PAGINATION
+            // =========================================================
+
+            function updatePagination() {
+                const pageInfo = document.getElementById("pageInfo");
+
+                const previous = document.getElementById("previousButton");
+
+                const next = document.getElementById("nextButton");
+
+                pageInfo.textContent =
+                    totalPages === 0
+                        ? "Không có trang"
+                        : `Trang ${currentPage + 1} / ${totalPages}`;
+
+                previous.disabled = currentPage <= 0;
+
+                next.disabled = currentPage >= totalPages - 1;
+            }
+
+            function previousPage() {
+                if (currentPage <= 0) {
+                    return;
+                }
+
+                currentPage--;
+
+                loadGolds();
+            }
+
+            function nextPage() {
+                if (currentPage >= totalPages - 1) {
+                    return;
+                }
+
+                currentPage++;
+
+                loadGolds();
+            }
+
+            // =========================================================
+            // CLOSE FORM MODAL
+            // =========================================================
+
+            function closeFormModal() {
+                document.getElementById("formModal").classList.remove("show");
+            }
+
+            // =========================================================
+            // CLOSE DETAIL MODAL
+            // =========================================================
+
+            function closeDetailModal() {
+                document.getElementById("detailModal").classList.remove("show");
+            }
+
+            // =========================================================
+            // CLICK OUTSIDE MODAL
+            // =========================================================
+
+            document
+                .getElementById("formModal")
+                .addEventListener("click", function (event) {
+                    if (event.target === this) {
+                        closeFormModal();
+                    }
+                });
+
+            document
+                .getElementById("detailModal")
+                .addEventListener("click", function (event) {
+                    if (event.target === this) {
+                        closeDetailModal();
+                    }
+                });
+
+            // =========================================================
+            // ENTER SEARCH
+            // =========================================================
+
+            document
+                .getElementById("nameSearch")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        searchGolds();
+                    }
+                });
+
+            document
+                .getElementById("typeSearch")
+                .addEventListener("keydown", function (event) {
+                    if (event.key === "Enter") {
+                        searchGolds();
+                    }
+                });
+
+            // =========================================================
+            // ESC CLOSE MODAL
+            // =========================================================
+
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    closeFormModal();
+
+                    closeDetailModal();
+                }
+            });
+
+            // =========================================================
+            // LOGOUT
+            // =========================================================
+
+            function logout() {
+                localStorage.removeItem("token");
+
+                localStorage.removeItem("accessToken");
+
+                localStorage.removeItem("userId");
+
+                localStorage.removeItem("username");
+
+                localStorage.removeItem("role");
+
+                window.location.href = "../login.html";
+            }
+
+            // =========================================================
+            // START
+            // =========================================================
+
+            if (checkAdmin()) {
+                loadGolds();
+            }
+        </script>
+    </body>
+</html>

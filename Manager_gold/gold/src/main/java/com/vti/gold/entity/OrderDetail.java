@@ -1,7 +1,8 @@
 package com.vti.gold.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vti.gold.entity.Gold;
+import com.vti.gold.entity.Order;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,37 +11,36 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
-
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "order_details")
 public class OrderDetail {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @Column(nullable = false)
     private Integer quantity;
-
 
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal price;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", nullable = false)
-    @JsonIgnoreProperties({"orderDetails"})
+    @JsonIgnoreProperties("orderDetails")
     private Order order;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gold_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Gold gold;
 
+    @Transient
+    public BigDecimal getTotalPrice() {
+        return price.multiply(BigDecimal.valueOf(quantity));
+    }
 }

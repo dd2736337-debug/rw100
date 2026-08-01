@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Đăng nhập - Gold Store</title>
+
+        <link rel="stylesheet" href="assets/css/style.css" />
+
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                font-family: Arial, Helvetica, sans-serif;
+                background: linear-gradient(135deg, #fff8e1, #f5d77a);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .login-container {
+                width: 100%;
+                max-width: 430px;
+                padding: 20px;
+            }
+
+            .login-card {
+                background: #ffffff;
+                border-radius: 18px;
+                padding: 35px;
+                box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+            }
+
+            .logo {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            .logo h1 {
+                margin: 0;
+                color: #c69214;
+                font-size: 32px;
+            }
+
+            .logo p {
+                margin-top: 8px;
+                color: #777;
+                font-size: 14px;
+            }
+
+            .form-title {
+                text-align: center;
+                margin: 25px 0;
+                color: #333;
+                font-size: 24px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group label {
+                display: block;
+                margin-bottom: 7px;
+                font-weight: 600;
+                color: #333;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 13px 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 15px;
+                outline: none;
+                transition: 0.2s;
+            }
+
+            .form-group input:focus {
+                border-color: #d4a017;
+                box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.12);
+            }
+
+            .password-wrapper {
+                position: relative;
+            }
+
+            .password-wrapper input {
+                padding-right: 50px;
+            }
+
+            .toggle-password {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                color: #777;
+                font-size: 14px;
+            }
+
+            .login-button {
+                width: 100%;
+                padding: 14px;
+                border: none;
+                border-radius: 8px;
+                background: #d4a017;
+                color: white;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: 0.2s;
+            }
+
+            .login-button:hover {
+                background: #b8860b;
+            }
+
+            .login-button:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+            }
+
+            .message {
+                display: none;
+                margin-bottom: 18px;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            .message.error {
+                display: block;
+                background: #fde8e8;
+                color: #b42318;
+                border: 1px solid #f5b5b5;
+            }
+
+            .message.success {
+                display: block;
+                background: #e8f7ed;
+                color: #18753c;
+                border: 1px solid #a9dfbb;
+            }
+
+            .extra-links {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            .extra-links a {
+                color: #b8860b;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .extra-links a:hover {
+                text-decoration: underline;
+            }
+
+            .register-link {
+                margin-top: 12px;
+                text-align: center;
+                color: #666;
+                font-size: 14px;
+            }
+
+            .register-link a {
+                color: #b8860b;
+                font-weight: bold;
+                text-decoration: none;
+            }
+
+            .register-link a:hover {
+                text-decoration: underline;
+            }
+
+            .back-home {
+                margin-top: 18px;
+                text-align: center;
+            }
+
+            .back-home a {
+                color: #555;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .back-home a:hover {
+                color: #b8860b;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="login-container">
+            <div class="login-card">
+                <div class="logo">
+                    <h1>💰 GOLD STORE</h1>
+                    <p>Cửa hàng vàng trực tuyến</p>
+                </div>
+
+                <h2 class="form-title">Đăng nhập</h2>
+
+                <div id="message" class="message"></div>
+
+                <form id="loginForm">
+                    <!-- USERNAME -->
+                    <div class="form-group">
+                        <label for="username"> Username </label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Nhập username"
+                            autocomplete="username"
+                            required
+                        />
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="form-group">
+                        <label for="password"> Mật khẩu </label>
+
+                        <div class="password-wrapper">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Nhập mật khẩu"
+                                autocomplete="current-password"
+                                required
+                            />
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="toggle-password"
+                            >
+                                Hiện
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="loginButton" class="login-button">
+                        Đăng nhập
+                    </button>
+                </form>
+
+                <div class="extra-links">
+                    <a href="forgot-password.html"> Quên mật khẩu? </a>
+                </div>
+
+                <div class="register-link">
+                    Chưa có tài khoản?
+                    <a href="register.html"> Đăng ký ngay </a>
+                </div>
+
+                <div class="back-home">
+                    <a href="index.html"> ← Về trang chủ </a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // =========================================================
+            // CONFIG
+            // =========================================================
+
+            const API_BASE_URL = "http://localhost:8080/api";
+
+            // =========================================================
+            // ELEMENTS
+            // =========================================================
+
+            const loginForm = document.getElementById("loginForm");
+
+            const usernameInput = document.getElementById("username");
+
+            const passwordInput = document.getElementById("password");
+
+            const loginButton = document.getElementById("loginButton");
+
+            const message = document.getElementById("message");
+
+            const togglePassword = document.getElementById("togglePassword");
+
+            // =========================================================
+            // HIỂN THỊ MESSAGE
+            // =========================================================
+
+            function showMessage(text, type) {
+                message.textContent = text;
+
+                message.className = "message " + type;
+            }
+
+            function hideMessage() {
+                message.textContent = "";
+
+                message.className = "message";
+            }
+
+            // =========================================================
+            // HIỆN / ẨN PASSWORD
+            // =========================================================
+
+            togglePassword.addEventListener("click", function () {
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+
+                    togglePassword.textContent = "Ẩn";
+                } else {
+                    passwordInput.type = "password";
+
+                    togglePassword.textContent = "Hiện";
+                }
+            });
+
+            // =========================================================
+            // XÓA PHIÊN ĐĂNG NHẬP CŨ
+            // =========================================================
+
+            function clearOldLoginData() {
+                localStorage.removeItem("token");
+                localStorage.removeItem("accessToken");
+
+                localStorage.removeItem("userId");
+                localStorage.removeItem("username");
+                localStorage.removeItem("role");
+
+                localStorage.removeItem("currentUser");
+                localStorage.removeItem("user");
+                localStorage.removeItem("userInfo");
+            }
+
+            // =========================================================
+            // LƯU PHIÊN ĐĂNG NHẬP MỚI
+            // =========================================================
+
+            function saveLoginData(data) {
+                /*
+                 * Backend AuthResponse:
+                 *
+                 * {
+                 *     userId,
+                 *     token,
+                 *     username,
+                 *     role
+                 * }
+                 */
+
+                if (!data.userId) {
+                    throw new Error("Backend không trả về userId.");
+                }
+
+                if (!data.token) {
+                    throw new Error("Backend không trả về token.");
+                }
+
+                if (!data.username) {
+                    throw new Error("Backend không trả về username.");
+                }
+
+                if (!data.role) {
+                    throw new Error("Backend không trả về role.");
+                }
+
+                // Lưu token
+                localStorage.setItem("token", data.token);
+
+                // Lưu userId
+                localStorage.setItem("userId", String(data.userId));
+
+                // Lưu username
+                localStorage.setItem("username", data.username);
+
+                // Lưu role
+                localStorage.setItem("role", data.role);
+
+                // Lưu object user
+                const user = {
+                    userId: data.userId,
+
+                    username: data.username,
+
+                    role: data.role,
+                };
+
+                localStorage.setItem("userInfo", JSON.stringify(user));
+
+                localStorage.setItem("currentUser", JSON.stringify(user));
+            }
+
+            // =========================================================
+            // ĐỌC ERROR TỪ BACKEND
+            // =========================================================
+
+            async function getErrorMessage(response) {
+                const text = await response.text();
+
+                if (!text) {
+                    return "Đăng nhập thất bại.";
+                }
+
+                try {
+                    const data = JSON.parse(text);
+
+                    return data.message || data.error || "Đăng nhập thất bại.";
+                } catch (error) {
+                    return text;
+                }
+            }
+
+            // =========================================================
+            // LOGIN
+            // =========================================================
+
+            loginForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                hideMessage();
+
+                const username = usernameInput.value.trim();
+
+                const password = passwordInput.value;
+
+                if (!username) {
+                    showMessage("Vui lòng nhập username.", "error");
+
+                    usernameInput.focus();
+
+                    return;
+                }
+
+                if (!password) {
+                    showMessage("Vui lòng nhập mật khẩu.", "error");
+
+                    passwordInput.focus();
+
+                    return;
+                }
+
+                // Disable button
+                loginButton.disabled = true;
+
+                loginButton.textContent = "Đang đăng nhập...";
+
+                try {
+                    // =================================================
+                    // XÓA TÀI KHOẢN CŨ TRƯỚC KHI ĐĂNG NHẬP
+                    // =================================================
+
+                    clearOldLoginData();
+
+                    // =================================================
+                    // GỌI BACKEND
+                    // =================================================
+
+                    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json",
+
+                            Accept: "application/json",
+                        },
+
+                        body: JSON.stringify({
+                            username: username,
+
+                            password: password,
+                        }),
+                    });
+
+                    // =================================================
+                    // BACKEND ERROR
+                    // =================================================
+
+                    if (!response.ok) {
+                        const errorMessage = await getErrorMessage(response);
+
+                        throw new Error(errorMessage);
+                    }
+
+                    // =================================================
+                    // ĐỌC JSON
+                    // =================================================
+
+                    const data = await response.json();
+
+                    console.log("Login response:", data);
+
+                    // =================================================
+                    // LƯU THÔNG TIN USER
+                    // =================================================
+
+                    saveLoginData(data);
+
+                    // =================================================
+                    // THÔNG BÁO
+                    // =================================================
+
+                    showMessage("Đăng nhập thành công!", "success");
+
+                    // =================================================
+                    // CHUYỂN TRANG
+                    // =================================================
+
+                    setTimeout(function () {
+                        if (String(data.role).toUpperCase() === "ADMIN") {
+                            window.location.href = "admin/dashboard.html";
+                        } else {
+                            window.location.href = "customer/products.html";
+                        }
+                    }, 500);
+                } catch (error) {
+                    console.error("Login error:", error);
+
+                    showMessage(
+                        error.message || "Đăng nhập thất bại.",
+                        "error",
+                    );
+                } finally {
+                    loginButton.disabled = false;
+
+                    loginButton.textContent = "Đăng nhập";
+                }
+            });
+        </script>
+    </body>
+</html>

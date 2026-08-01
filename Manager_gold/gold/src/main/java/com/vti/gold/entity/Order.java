@@ -20,34 +20,49 @@ import java.util.List;
 @Table(name = "orders")
 public class Order {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
-    @Column(name = "totalprice", nullable = false, precision = 15, scale = 2)
-    private BigDecimal totalPrice;
-
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal totalPrice = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private OrderStatus status;
 
+    // Đã trừ kho hay chưa
+    @Column(nullable = false)
+    private Boolean stockReduced = false;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(name = "confirmed_at")
+    private LocalDateTime confirmedAt;
+
+    @Column(name = "shipping_at")
+    private LocalDateTime shippingAt;
+
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
+
+    @Column(name = "cancelled_at")
+    private LocalDateTime cancelledAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnoreProperties({"orders"})
     private User user;
 
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "order",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
+    )
     @JsonIgnoreProperties({"order"})
     private List<OrderDetail> orderDetails = new ArrayList<>();
-
 
     @PrePersist
     public void prePersist() {
@@ -59,14 +74,19 @@ public class Order {
         if (status == null) {
             status = OrderStatus.PENDING;
         }
+
+        if (stockReduced == null) {
+            stockReduced = false;
+        }
     }
 
-
     public void addOrderDetail(OrderDetail detail) {
-
         orderDetails.add(detail);
-
         detail.setOrder(this);
+    }
 
+    public void removeOrderDetail(OrderDetail detail) {
+        orderDetails.remove(detail);
+        detail.setOrder(null);
     }
 }

@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>Gold Store - Trang chủ</title>
+
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                background: #f8f8f8;
+                color: #333;
+            }
+
+            a {
+                text-decoration: none;
+                color: inherit;
+            }
+
+            .container {
+                width: 90%;
+                max-width: 1200px;
+                margin: auto;
+            }
+
+            /* HEADER */
+            header {
+                background: #111;
+                color: white;
+                height: 70px;
+            }
+
+            .header-container {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .logo {
+                font-size: 25px;
+                font-weight: bold;
+                color: #d4af37;
+            }
+
+            .logo span {
+                color: white;
+            }
+
+            nav {
+                display: flex;
+                gap: 30px;
+            }
+
+            nav a {
+                color: white;
+                font-size: 16px;
+                transition: 0.3s;
+            }
+
+            nav a:hover {
+                color: #d4af37;
+            }
+
+            .header-buttons {
+                display: flex;
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 10px 18px;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .btn-login {
+                border: 1px solid #d4af37;
+                color: #d4af37;
+            }
+
+            .btn-register {
+                background: #d4af37;
+                color: #111;
+            }
+
+            /* HERO */
+            .hero {
+                min-height: 550px;
+                background: linear-gradient(135deg, #111111, #292929);
+                color: white;
+                display: flex;
+                align-items: center;
+            }
+
+            .hero-container {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 50px;
+            }
+
+            .hero-content {
+                flex: 1;
+            }
+
+            .hero-content small {
+                color: #d4af37;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .hero-content h1 {
+                margin: 20px 0;
+                font-size: 52px;
+                line-height: 1.15;
+            }
+
+            .hero-content h1 span {
+                color: #d4af37;
+            }
+
+            .hero-content p {
+                max-width: 550px;
+                color: #ddd;
+                line-height: 1.7;
+                margin-bottom: 30px;
+            }
+
+            .hero-button {
+                display: inline-block;
+                background: #d4af37;
+                color: #111;
+                padding: 14px 28px;
+                border-radius: 5px;
+                font-weight: bold;
+            }
+
+            .hero-button:hover {
+                background: #f0ce50;
+            }
+
+            .hero-image {
+                width: 350px;
+                height: 350px;
+                border-radius: 50%;
+                border: 3px solid #d4af37;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 100px;
+                color: #d4af37;
+                font-weight: bold;
+            }
+
+            /* FEATURES */
+            .features {
+                padding: 70px 0;
+                background: white;
+            }
+
+            .section-title {
+                text-align: center;
+                margin-bottom: 45px;
+            }
+
+            .section-title h2 {
+                font-size: 32px;
+                margin-bottom: 10px;
+            }
+
+            .section-title p {
+                color: #777;
+            }
+
+            .feature-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 25px;
+            }
+
+            .feature-card {
+                padding: 30px 20px;
+                text-align: center;
+                border: 1px solid #eee;
+                border-radius: 8px;
+                transition: 0.3s;
+            }
+
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            .feature-icon {
+                font-size: 40px;
+                margin-bottom: 15px;
+            }
+
+            .feature-card h3 {
+                margin-bottom: 10px;
+            }
+
+            .feature-card p {
+                color: #777;
+                line-height: 1.6;
+            }
+
+            /* PRODUCTS */
+            .products {
+                padding: 70px 0;
+                background: #f8f8f8;
+            }
+
+            .product-box {
+                min-height: 200px;
+                border: 2px dashed #ddd;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                color: #777;
+                background: white;
+                border-radius: 8px;
+            }
+
+            .products-button {
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .products-button a {
+                display: inline-block;
+                padding: 13px 25px;
+                background: #111;
+                color: white;
+                border-radius: 5px;
+            }
+
+            .products-button a:hover {
+                background: #d4af37;
+                color: #111;
+            }
+
+            /* FOOTER */
+            footer {
+                background: #111;
+                color: white;
+                padding-top: 50px;
+            }
+
+            .footer-grid {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                gap: 40px;
+                padding-bottom: 40px;
+            }
+
+            footer h3 {
+                margin-bottom: 18px;
+                color: #d4af37;
+            }
+
+            footer p {
+                color: #aaa;
+                line-height: 1.7;
+            }
+
+            footer a {
+                display: block;
+                color: #aaa;
+                margin-bottom: 10px;
+            }
+
+            footer a:hover {
+                color: #d4af37;
+            }
+
+            .footer-bottom {
+                border-top: 1px solid #333;
+                text-align: center;
+                padding: 20px;
+                color: #888;
+            }
+
+            /* RESPONSIVE */
+            @media (max-width: 900px) {
+                nav {
+                    display: none;
+                }
+
+                .hero-container {
+                    flex-direction: column;
+                    text-align: center;
+                    padding: 60px 0;
+                }
+
+                .hero-content p {
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .feature-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .footer-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
+            @media (max-width: 600px) {
+                .header-buttons {
+                    display: none;
+                }
+
+                .hero-content h1 {
+                    font-size: 38px;
+                }
+
+                .hero-image {
+                    width: 250px;
+                    height: 250px;
+                    font-size: 70px;
+                }
+
+                .feature-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .footer-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <!-- ================= HEADER ================= -->
+
+        <header>
+            <div class="container header-container">
+                <a href="index.html" class="logo"> GOLD<span>STORE</span> </a>
+
+                <nav>
+                    <a href="index.html">Trang chủ</a>
+
+                    <a href="customer/products.html"> Sản phẩm </a>
+
+                    <a href="login.html"> Đăng nhập </a>
+                </nav>
+
+                <div class="header-buttons">
+                    <a href="login.html" class="btn btn-login"> Đăng nhập </a>
+
+                    <a href="register.html" class="btn btn-register">
+                        Đăng ký
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ================= HERO ================= -->
+
+        <section class="hero">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <small> GOLD STORE </small>
+
+                    <h1>
+                        Vẻ đẹp của
+                        <span>vàng</span>
+                        <br />
+                        trong tầm tay bạn
+                    </h1>
+
+                    <p>
+                        Khám phá các sản phẩm vàng chất lượng cao với thiết kế
+                        tinh tế, giá cả minh bạch và dịch vụ chuyên nghiệp.
+                    </p>
+
+                    <a href="customer/products.html" class="hero-button">
+                        Xem sản phẩm
+                    </a>
+                </div>
+
+                <div class="hero-image">Au</div>
+            </div>
+        </section>
+
+        <!-- ================= FEATURES ================= -->
+
+        <section class="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Vì sao chọn Gold Store?</h2>
+
+                    <p>Mang đến trải nghiệm mua vàng an toàn và thuận tiện.</p>
+                </div>
+
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💎</div>
+
+                        <h3>Chất lượng</h3>
+
+                        <p>
+                            Sản phẩm vàng được đảm bảo chất lượng và nguồn gốc
+                            rõ ràng.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+
+                        <h3>Giá minh bạch</h3>
+
+                        <p>
+                            Giá sản phẩm rõ ràng, giúp khách hàng dễ dàng lựa
+                            chọn.
+                        </p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+
+                        <h3>An toàn</h3>
+
+                        <p>Thông tin tài khoản và giao dịch được bảo vệ.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🚚</div>
+
+                        <h3>Giao hàng</h3>
+
+                        <p>
+                            Đóng gói cẩn thận và hỗ trợ giao hàng nhanh chóng.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <section class="products">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Sản phẩm vàng</h2>
+
+                    <p>Khám phá các sản phẩm nổi bật của Gold Store.</p>
+                </div>
+
+                <div class="product-box">
+                    <div>
+                        <h3>Danh sách sản phẩm</h3>
+
+                        <p>
+                            Sản phẩm sẽ được kết nối với Backend API ở các file
+                            tiếp theo.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="products-button">
+                    <a href="customer/products.html"> Xem tất cả sản phẩm </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer>
+            <div class="container footer-grid">
+                <div>
+                    <h3>GOLD STORE</h3>
+
+                    <p>
+                        Hệ thống kinh doanh vàng trực tuyến với mục tiêu mang
+                        đến sản phẩm chất lượng và dịch vụ tốt nhất.
+                    </p>
+                </div>
+
+                <div>
+                    <h3>Điều hướng</h3>
+
+                    <a href="index.html"> Trang chủ </a>
+
+                    <a href="customer/products.html"> Sản phẩm </a>
+
+                    <a href="login.html"> Đăng nhập </a>
+
+                    <a href="register.html"> Đăng ký </a>
+                </div>
+
+                <div>
+                    <h3>Khách hàng</h3>
+
+                    <a href="customer/cart.html"> Giỏ hàng </a>
+
+                    <a href="customer/orders.html"> Đơn hàng </a>
+
+                    <a href="customer/profile.html"> Tài khoản </a>
+                </div>
+
+                <div>
+                    <h3>Liên hệ</h3>
+
+                    <p>Hotline: 1900 0000</p>
+
+                    <p>Email: support@goldstore.vn</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                © 2026 GOLD STORE. All rights reserved.
+            </div>
+        </footer>
+    </body>
+</html>

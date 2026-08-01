@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class OrderDTO {
 
@@ -22,6 +22,14 @@ public class OrderDTO {
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime confirmedAt;
+
+    private LocalDateTime shippingAt;
+
+    private LocalDateTime completedAt;
+
+    private LocalDateTime cancelledAt;
+
     private Integer userId;
 
     private String username;
@@ -29,4 +37,5 @@ public class OrderDTO {
     private String fullName;
 
     private List<OrderDetailDTO> orderDetails;
+
 }
