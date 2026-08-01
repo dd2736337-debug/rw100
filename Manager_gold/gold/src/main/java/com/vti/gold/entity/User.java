@@ -67,4 +67,7 @@ public class User {
     @JsonIgnoreProperties("user")
     private List<Order> orders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
+
 }

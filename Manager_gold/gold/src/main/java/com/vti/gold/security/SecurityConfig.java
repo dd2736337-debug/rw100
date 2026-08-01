@@ -102,6 +102,22 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/golds/**").hasRole("ADMIN")
 
                         // =================================================
+                        // CART
+                        // =================================================
+
+                        // CUSTOMER + ADMIN xem giỏ hàng
+                        .requestMatchers(HttpMethod.GET, "/api/cart/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                        // CUSTOMER + ADMIN thêm giỏ
+                        .requestMatchers(HttpMethod.POST, "/api/cart/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                        // CUSTOMER + ADMIN cập nhật giỏ
+                        .requestMatchers(HttpMethod.PUT, "/api/cart/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                        // CUSTOMER + ADMIN xoá giỏ
+                        .requestMatchers(HttpMethod.DELETE, "/api/cart/**").hasAnyRole("ADMIN", "CUSTOMER")
+
+                        // =================================================
                         // ORDER
                         // =================================================
 
@@ -152,7 +168,7 @@ public class SecurityConfig {
                         // USER MANAGEMENT
                         // =================================================
 
-                         // ADMIN quản lý người dùng
+                        // ADMIN quản lý người dùng
                         .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/users/**").hasRole("ADMIN")

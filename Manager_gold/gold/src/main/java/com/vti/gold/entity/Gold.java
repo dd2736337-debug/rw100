@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Getter
@@ -46,6 +47,9 @@ public class Gold {
     @JoinColumn(name = "category_id", nullable = false)
     @JsonIgnoreProperties("golds")
     private Category category;
+
+    @OneToMany(mappedBy = "gold")
+    private List<Cart> carts;
 
     @Column(length = 255)
     private String image;
